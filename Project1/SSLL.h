@@ -161,25 +161,64 @@ void SSLL<E>::replace(E      element,
 
 template<typename E>
 E SSLL<E>::remove(size_t position) {
-  if (position > (length() - 1)) {
+  if (position > (length() - 2)) {
     throw std::runtime_error(
             "cannot replace outside of array: position > length-1 not allowed");
     return;
   }
+  else if (position == length() - 1) {
+    return pop_back();
+  }
+  else if (position == 0) {
+    return pop_front();
+  }
   Node *it = head;
+  Node *prev;
+  Node *temp;
 
   while (it) {
-    if (position == 0) {}
+    if (position == 0) {
+      temp       = it;
+      prev->next = it->next;
+      return temp->data;
+    }
     position--;
-    it = it->next;
+    it   = it->next;
+    prev = it;
   }
 }
 
 template<typename E>
-E SSLL<E     >::pop_back(void)  {}
+E SSLL<E>::pop_back(void) {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot pop off empty list");
+    return 0;
+  }
+  Node *prev = head;
+  Node *temp = tail;
+  Node *it   = head;
+
+  while (it->next) {
+    prev = it;
+    it   = it->next;
+  }
+  tail = prev;
+  it   = nullptr;
+  return temp->data;
+}
 
 template<typename E>
-E SSLL<E     >::pop_front(void) {}
+E SSLL<E>::pop_front(void) {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot pop off empty list");
+    return 0;
+  }
+  Node *temp = head;
+  head = head->next; // could equal nullptr
+  return temp->data;
+}
 
 template<typename E>
 E      SSLL<E>::item_at(size_t position) {
@@ -200,16 +239,27 @@ E      SSLL<E>::item_at(size_t position) {
 }
 
 template<typename E>
-E      SSLL<E>::peek_back(void)  {}
+E      SSLL<E>::peek_back(void)  {
+  return tail->data;
+}
 
 template<typename E>
-E      SSLL<E>::peek_front(void) {}
+E      SSLL<E>::peek_front(void) {
+  return head->data;
+}
 
 template<typename E>
-bool   SSLL<E>::is_empty(void)   {}
+bool   SSLL<E>::is_empty(void)   {
+  if (head == tail) {
+    return true;
+  }
+  return false;
+}
 
 template<typename E>
-bool   SSLL<E>::is_full(void)    {}
+bool   SSLL<E>::is_full(void) {
+  return false;
+}
 
 template<typename E>
 size_t SSLL<E>::length(void)          {
