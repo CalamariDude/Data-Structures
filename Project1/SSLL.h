@@ -11,7 +11,7 @@ class SSLL : public List<E>{
   struct Node {
 public:
 
-    Node *next;
+    Node *next = nullptr;
     E     data;
     Node(E data) {
       this->data = data;
@@ -85,57 +85,158 @@ public:
   ˜SSLL() override;
 };
 template<typename E>
-void SSLL<E>::insert(E element, int position) {}
+void SSLL<E>::insert(E element, size_t position) {
+  if (position > 1 + length()) {
+    throw std::runtime_error(
+            "cannot insert outside of array: position > 1 + length not allowed");
+    return;
+  }
+  else if (position == 0) {
+    push_front(element);
+    return;
+  }
+  else if (position == length()) {
+    push_back(element);
+    return;
+  }
+  else {
+    Node *it = head;
+    Node *prev;
 
-void SSLL<E>::push_back(E element)            {}
+    do {
+      if (position == 0) {
+        Node *toAdd = new Node(elememt);
+        prev->next  = toAdd;
+        toAdd->next = it;
+        return;
+      }
+      position--;
+      prev = it;
+      it   = it->next;
+    } while (it);
+  }
+}
 
+template<typename E>
+void SSLL<E>::push_back(E element)  {
+  Node *toAdd = new Node(element);
 
-void SSLL<E>::push_front(E element)           {}
+  if (head == tail) {
+    head = toAdd;
+  }
+  tail->next = toAdd;
+  tail       = toAdd;
+}
 
+template<typename E>
+void SSLL<E>::push_front(E element) {
+  Node *toAdd = new Node(element);
 
-void SSLL<E>::replace(E   element,
-                      int position)  {}
+  if (head == tail) {
+    tail = toAdd;
+  }
+  toAdd->next = head;
+  head        = toAdd;
+}
 
+template<typename E>
+void SSLL<E>::replace(E      element,
+                      size_t position)  {
+  if (position > (length() - 1)) {
+    throw std::runtime_error(
+            "cannot replace outside of array: position > length-1 not allowed");
+    return;
+  }
+  Node *it = head;
 
-E SSLL<E     >::remove(int position)  {}
+  while (it) {
+    if (position == 0) {
+      it->data = element;
+      return;
+    }
+    position--;
+    it = it->next;
+  }
+}
 
+template<typename E>
+E SSLL<E>::remove(size_t position) {
+  if (position > (length() - 1)) {
+    throw std::runtime_error(
+            "cannot replace outside of array: position > length-1 not allowed");
+    return;
+  }
+  Node *it = head;
 
-E SSLL<E     >::pop_back(void)        {}
+  while (it) {
+    if (position == 0) {}
+    position--;
+    it = it->next;
+  }
+}
 
+template<typename E>
+E SSLL<E     >::pop_back(void)  {}
 
-E SSLL<E     >::pop_front(void)       {}
+template<typename E>
+E SSLL<E     >::pop_front(void) {}
 
+template<typename E>
+E      SSLL<E>::item_at(size_t position) {
+  if (position > (length() - 1)) {
+    throw std::runtime_error(
+            "cannot find outside of array: position > length-1 not allowed");
+    return 0;
+  }
+  Node *it = head;
 
-E      SSLL<E>::item_at(int position) {}
+  while (it) {
+    if (position == 0) {
+      return it->data;
+    }
+    position--;
+    it = it->next;
+  }
+}
 
+template<typename E>
+E      SSLL<E>::peek_back(void)  {}
 
-E      SSLL<E>::peek_back(void)       {}
+template<typename E>
+E      SSLL<E>::peek_front(void) {}
 
+template<typename E>
+bool   SSLL<E>::is_empty(void)   {}
 
-E      SSLL<E>::peek_front(void)      {}
+template<typename E>
+bool   SSLL<E>::is_full(void)    {}
 
+template<typename E>
+size_t SSLL<E>::length(void)          {
+  size_t counter = 0;
+  Node  *it      = head;
 
-bool   SSLL<E>::is_empty(void)        {}
+  while (it) {
+    counter++;
+    it = it->next;
+  }
+  return counter;
+}
 
+template<typename E>
+void   SSLL<E>::clear(void) {}
 
-bool   SSLL<E>::is_full(void)         {}
-
-
-size_t SSLL<E>::length(void)          {}
-
-
-void   SSLL<E>::clear(void)           {}
-
-
+template<typename E>
 bool SSLL<E  >::contains(E element,
                          bool (*equals_to_function)(E, E))  {}
 
-
+template<typename E>
 void SSLL<E>::print(std::ostream& os) {}
 
-
+template<typename E>
 E *SSLL<E  >::contents(void)          {}
 
+template<typename E>
 SSLL<E>::~SSLL() {}
 }
 

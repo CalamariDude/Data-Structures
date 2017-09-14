@@ -9,8 +9,8 @@ public:
   // adds the specified element to the list at the specified position, shifting
   // the element originally at that and those in subsequent positions one
   // position to the ”right.“
-  virtual void insert(E   element,
-                      int position) = 0;
+  virtual void insert(E      element,
+                      size_t position) = 0;
 
   // appends the specified element to the list.
   virtual void push_back(E element) = 0;
@@ -20,12 +20,12 @@ public:
 
   // replaces the existing element at the specified position with the specified
   // element and return the original element.
-  virtual void replace(E   element,
-                       int position) = 0;
+  virtual void replace(E      element,
+                       size_t position) = 0;
 
   // removes and returns the the element at the specified position, shifting the
   // subsequent elements one position to the ”left.“
-  virtual E remove(int position) = 0;
+  virtual E remove(size_t position) = 0;
 
   // removes and returns the element at the list's tail.
   virtual E pop_back(void) = 0;
@@ -35,7 +35,7 @@ public:
 
   // returns (without removing from the list) the element at the specified
   // position.
-  virtual E    item_at(int position) = 0;
+  virtual E    item_at(size_t position) = 0;
 
   // returns the element at the list's tail.
   virtual E    peek_back(void) = 0;

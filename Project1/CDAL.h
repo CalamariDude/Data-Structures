@@ -22,8 +22,8 @@ public:
   // adds the specified element to the list at the specified position, shifting
   // the element originally at that and those in subsequent positions one
   // position to the ”right.“
-  void insert(E   element,
-              int position) override;
+  void insert(E      element,
+              size_t position) override;
 
   // appends the specified element to the list.
   void push_back(E element)  override;
@@ -33,12 +33,12 @@ public:
 
   // replaces the existing element at the specified position with the specified
   // element and return the original element.
-  void replace(E   element,
-               int position)  override;
+  void replace(E      element,
+               size_t position)  override;
 
   // removes and returns the the element at the specified position, shifting the
   // subsequent elements one position to the ”left.“
-  E remove(int position)  override;
+  E remove(size_t position)  override;
 
   // removes and returns the element at the list's tail.
   E pop_back(void)  override;
@@ -48,7 +48,7 @@ public:
 
   // returns (without removing from the list) the element at the specified
   // position.
-  E      item_at(int position)  override;
+  E      item_at(size_t position)  override;
 
   // returns the element at the list's tail.
   E      peek_back(void)  override;
@@ -84,5 +84,60 @@ public:
 
   ˜CDAL() override;
 };
+template<typename E>
+void CDAL<E>::insert(E element, size_t position) {}
+
+template<typename E>
+void CDAL<E>::push_back(E element)               {}
+
+template<typename E>
+void CDAL<E>::push_front(E element)              {}
+
+template<typename E>
+void CDAL<E>::replace(E      element,
+                      size_t position)  {}
+
+template<typename E>
+E CDAL<E     >::remove(size_t position)  {}
+
+template<typename E>
+E CDAL<E     >::pop_back(void)           {}
+
+template<typename E>
+E CDAL<E     >::pop_front(void)          {}
+
+template<typename E>
+E      CDAL<E>::item_at(size_t position) {}
+
+template<typename E>
+E      CDAL<E>::peek_back(void)          {}
+
+template<typename E>
+E      CDAL<E>::peek_front(void)         {}
+
+template<typename E>
+bool   CDAL<E>::is_empty(void)           {}
+
+template<typename E>
+bool   CDAL<E>::is_full(void)            {}
+
+template<typename E>
+size_t CDAL<E>::length(void)             {}
+
+template<typename E>
+void   CDAL<E>::clear(void)              {}
+
+template<typename E>
+bool CDAL<E  >::contains(E element,
+                         bool (*equals_to_function)(E, E))  {}
+
+template<typename E>
+void CDAL<E>::print(std::ostream& os) {}
+
+template<typename E>
+E *CDAL<E  >::contents(void)          {}
+
+template<typename E>
+CDAL<E>::~CDAL() {}
 }
 #endif // ifndef _CDAL_H
