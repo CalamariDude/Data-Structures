@@ -6,6 +6,7 @@ template<typename E>
 class PSLL : public List<E>{
   Node *head;
   Node *tail;
+  Node *free;
 
   template<typename E>
   struct Node {
@@ -83,15 +84,19 @@ public:
   E* contents(void)  override;
 
   ˜PSLL() override;
+
+private:
+
+  Node   * getFreeNode();
 };
 template<typename E>
 void PSLL<E>::insert(E element, size_t position) {}
 
 template<typename E>
-void PSLL<E>::push_back(E element)               {}
+void PSLL<E>::push_back(E element)  {}
 
 template<typename E>
-void PSLL<E>::push_front(E element)              {}
+void PSLL<E>::push_front(E element) {}
 
 template<typename E>
 void PSLL<E>::replace(E      element,
@@ -136,6 +141,8 @@ void PSLL<E>::print(std::ostream& os) {}
 
 template<typename E>
 E *PSLL<E  >::contents(void)          {}
+
+getFreeNode
 
 template<typename E>
 PSLL<E>::~PSLL() {}

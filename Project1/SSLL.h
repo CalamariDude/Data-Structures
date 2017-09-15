@@ -1,6 +1,8 @@
 #ifndef _SSLL_H
 #define _SSLL_H
 #include "List.h"
+#include <string>
+#include <iostream>
 namespace cop3530 {
 template<typename E>
 class SSLL : public List<E>{
@@ -172,8 +174,8 @@ E SSLL<E>::remove(size_t position) {
   else if (position == 0) {
     return pop_front();
   }
-  Node *it = head;
-  Node *prev;
+  Node *it   = head;
+  Node *prev = head;
   Node *temp;
 
   while (it) {
@@ -195,7 +197,7 @@ E SSLL<E>::pop_back(void) {
             "cannot pop off empty list");
     return 0;
   }
-  Node *prev = head;
+  Node *prev = nullptr;
   Node *temp = tail;
   Node *it   = head;
 
@@ -204,7 +206,10 @@ E SSLL<E>::pop_back(void) {
     it   = it->next;
   }
   tail = prev;
-  it   = nullptr;
+
+  if (prev) {
+    tail->next = nullptr;
+  }
   return temp->data;
 }
 
@@ -216,7 +221,13 @@ E SSLL<E>::pop_front(void) {
     return 0;
   }
   Node *temp = head;
-  head = head->next; // could equal nullptr
+
+  if (head == tail) {
+    head = tail = nullptr;
+  }
+  else {
+    head = head->next; // could equal nullptr
+  }
   return temp->data;
 }
 
@@ -236,15 +247,26 @@ E      SSLL<E>::item_at(size_t position) {
     position--;
     it = it->next;
   }
+  return 0;
 }
 
 template<typename E>
 E      SSLL<E>::peek_back(void)  {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot peek empty list");
+    return 0;
+  }
   return tail->data;
 }
 
 template<typename E>
 E      SSLL<E>::peek_front(void) {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot peek empty list");
+    return 0;
+  }
   return head->data;
 }
 
@@ -274,20 +296,61 @@ size_t SSLL<E>::length(void)          {
 }
 
 template<typename E>
-void   SSLL<E>::clear(void) {}
+void   SSLL<E>::clear(void) {
+  // could cause memory leak
+  head = nullptr;
+  tail = nullptr;
+}
 
 template<typename E>
-bool SSLL<E  >::contains(E element,
-                         bool (*equals_to_function)(E, E))  {}
+bool SSLL<E>::contains(E element,
+                       bool (*equals_to_function)(E, E))  {
+  Node *it = head;
+
+  while (it) {
+    if (equals_to_function(it->data, element)) {
+      return true;
+    }
+    it = it->next;
+  }
+  return false;
+}
 
 template<typename E>
-void SSLL<E>::print(std::ostream& os) {}
+void SSLL<E>::print(std::ostream& os) {
+  Node *it = head;
+
+  std::string str = "";
+
+  while (it) {
+    it   = it->next;
+    str += to_string(it->data) + " ";
+  }
+  os << str << endl;
+}
 
 template<typename E>
-E *SSLL<E  >::contents(void)          {}
+E *SSLL<E>::contents(void) {
+  size_t len = length();
+  Node  *it  = head;
+
+  E[len] * elements;
+  size_t counter = 0;
+
+  while (it) {
+    elements[i] = it->data;
+    it          = it->next;
+    counter++;
+  }
+
+  return elements;
+}
 
 template<typename E>
-SSLL<E>::~SSLL() {}
+SSLL<E>::~SSLL() {
+  head = nullptr;
+  tail = nullptr;
+}
 }
 
 
