@@ -62,11 +62,12 @@ int  main() {
   List<int> *sdal = new SDAL();
   List<int> *cdal = new CDAL();
 
-  std::vector<*List<int> > lists(4);
-  lists[0] = ssll;
-  lists[1] = psll;
-  list[2]  = sdal;
-  lists[3] = cdal;
+  std::vector<*List<int> > lists;
+  lists.push_back(ssll);
+
+  // lists.push_back(psll);
+  // list.push_back(sdal);
+  // lists.push_back(cdal);
 
   for (int i = 0; i < lists.size(); i++) {
     bool push_pop_test              = push_pop(list[i]);
@@ -76,17 +77,19 @@ int  main() {
     bool push_replace_pop_test      = push_replace_pop(list[i]);
     bool push_replace_contents_test = push_replace_contents(list[i]);
     bool push_length_isempty_test   = push_length_isempty(list[i]);
+    std::cout << "list num " << i << std::endl;
+    std::cout << "push_pop_test = " << push_pop_test << std::endl;
+    std::cout << "push_insert_remove_test = " << push_insert_remove_test <<
+      std::endl;
+    std::cout << "push_peek_print_test = "  << push_peek_print_test << std::endl;
+    std::cout << "push_clear_push_test = " << push_clear_push_test << std::endl;
+    std::cout << "push_replace_pop_test = " << push_replace_pop_test  <<
+      std::endl;
+    std::cout << "push_replace_contents_test" << push_replace_contents_test <<
+      std::endl;
+    std::cout << "push_length_isempty_test" << push_length_isempty_test <<
+      std::endl << std::endl;
   }
-  std::cout << "push_pop_test = " << push_pop_test << std::endl;
-  std::cout << "push_insert_remove_test = " << push_insert_remove_test <<
-    std::endl;
-  std::cout << "push_peek_print_test = "  << push_peek_print_test << std::endl;
-  std::cout << "push_clear_push_test = " << push_clear_push_test << std::endl;
-  std::cout << "push_replace_pop_test = " << push_replace_pop_test  << std::endl;
-  std::cout << "push_replace_contents_test" << push_replace_contents_test <<
-    std::endl;
-  std::cout << "push_length_isempty_test" << push_length_isempty_test <<
-    std::endl;
 
   return 0;
 }
