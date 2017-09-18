@@ -19,6 +19,18 @@ public:
       next       = nullptr;
     }
   };
+  template<typename E>
+  class NodePool {
+public:
+
+    NodePool(size_t memsize) {}
+
+    Node* getFreeNode() {}
+
+    void  returnNode()  {}
+
+    bool  inUse() {}
+  };
 
   // adds the specified element to the list at the specified position, shifting
   // the element originally at that and those in subsequent positions one
@@ -93,10 +105,10 @@ template<typename E>
 void PSLL<E>::insert(E element, size_t position) {}
 
 template<typename E>
-void PSLL<E>::push_back(E element)  {}
+void PSLL<E>::push_back(E element)               {}
 
 template<typename E>
-void PSLL<E>::push_front(E element) {}
+void PSLL<E>::push_front(E element)              {}
 
 template<typename E>
 void PSLL<E>::replace(E      element,

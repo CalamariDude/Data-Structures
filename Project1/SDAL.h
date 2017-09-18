@@ -4,20 +4,47 @@
 namespace cop3530 {
 template<typename E>
 class SDAL : public List<E>{
-  Node *head;
-  Node *tail;
-
+  size_t head;
+  size_t tail;
+  std::vector<Node<E> >v(50);
   template<typename E>
   struct Node {
 public:
 
-    Node *next;
-    E     data;
+    size_t next;
+    E      data;
     Node(E data) {
       this->data = data;
-      next       = nullptr;
+      next       = -1;
     }
   };
+
+  // no ur stupid
+  // construcot
+  SDAL() {
+    head = 0;
+    tail = 0;
+
+    for (size_t i = 0; i < 50; i++) {
+      Node *add = new Node(nullptr);
+      v[i] = add;
+    }
+  }
+
+  SDAL(size_t size) {
+    // errors
+    std::vector<Node<E> > a(size);
+    v = a;
+    delete a;
+
+    head = 0;
+    tail = 0;
+
+    for (size_t i = 0; i < size; i++) {
+      Node *add = new Node(nullptr);
+      v[i] = add;
+    }
+  }
 
   // adds the specified element to the list at the specified position, shifting
   // the element originally at that and those in subsequent positions one
@@ -83,61 +110,273 @@ public:
   E* contents(void)  override;
 
   ˜SDAL() override;
+
+  bool inUse(Node *ptr);
 };
+
+// tbd
 template<typename E>
-void SDAL<E>::insert(E element, size_t position) {}
+void SDAL<E>::insert(E element, size_t position) {
+  if (position > 1 + length()) {
+    throw std::runtime_error(
+            "cannot insert outside of array: position > 1 + length not allowed");
+    return;
+  }
+  else if (position == 0) {
+    push_front(element);
+    return;
+  }
+  else if (position == length()) {
+    push_back(element);
+    return;
+  }
+  else {
+    Node *it = head;
+    Node *prev;
+
+    do {
+      if (position == 0) {
+        Node *toAdd = new Node(elememt);
+        prev->next  = toAdd;
+        toAdd->next = it;
+        return;
+      }
+      position--;
+      prev = it;
+      it   = it->next;
+    } while (it);
+  }
+}
+
+// tbd
+template<typename E>
+void SDAL<E>::push_back(E element)               {
+  Node *toAdd = new Node(element);
+
+  if (head == tail) {
+    head = toAdd;
+  }
+  tail->next = toAdd;
+  tail       = toAdd;
+}
 
 template<typename E>
-void SDAL<E>::push_back(E element)               {}
+void SDAL<E>::push_front(E element) {
+  Node *toAdd = new Node(element);
 
-template<typename E>
-void SDAL<E>::push_front(E element)              {}
+  if (head == tail) {
+    tail = toAdd;
+  }
+  toAdd->next = head;
+  head        = toAdd;
+}
 
 template<typename E>
 void SDAL<E>::replace(E      element,
-                      size_t position)  {}
+                      size_t position)  {
+  if (position > (length() - 1)) {
+    throw std::runtime_error(
+            "cannot replace outside of array: position > length-1 not allowed");
+    return;
+  }
+  Node *it = head;
+
+  while (it) {
+    if (position == 0) {
+      it->data = element;
+      return;
+    }
+    position--;
+    it = it->next;
+  }
+}
 
 template<typename E>
-E SDAL<E     >::remove(size_t position)  {}
+E SDAL<E>::remove(size_t position)  {
+  if (position > (length() - 2)) {
+    throw std::runtime_error(
+            "cannot replace outside of array: position > length-1 not allowed");
+    return;
+  }
+  else if (position == length() - 1) {
+    return pop_back();
+  }
+  else if (position == 0) {
+    return pop_front();
+  }
+  Node *it   = head;
+  Node *prev = head;
+  Node *temp;
+
+  while (it) {
+    if (position == 0) {
+      temp       = it;
+      prev->next = it->next;
+      return temp->data;
+    }
+    position--;
+    it   = it->next;
+    prev = it;
+  }
+}
 
 template<typename E>
-E SDAL<E     >::pop_back(void)           {}
+E SDAL<E>::pop_back(void)           {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot pop off empty list");
+    return 0;
+  }
+  Node *prev = nullptr;
+  Node *temp = tail;
+  Node *it   = head;
+
+  while (it->next) {
+    prev = it;
+    it   = it->next;
+  }
+  tail = prev;
+
+  if (prev) {
+    tail->next = nullptr;
+  }
+  return temp->data;
+}
 
 template<typename E>
-E SDAL<E     >::pop_front(void)          {}
+E SDAL<E>::pop_front(void)          {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot pop off empty list");
+    return 0;
+  }
+  Node *temp = head;
+
+  if (head == tail) {
+    head = tail = nullptr;
+  }
+  else {
+    head = head->next; // could equal nullptr
+  }
+  return temp->data;
+}
 
 template<typename E>
-E      SDAL<E>::item_at(size_t position) {}
+E      SDAL<E>::item_at(size_t position) {
+  if (position > (length() - 1)) {
+    throw std::runtime_error(
+            "cannot find outside of array: position > length-1 not allowed");
+    return 0;
+  }
+  Node *it = head;
+
+  while (it) {
+    if (position == 0) {
+      return it->data;
+    }
+    position--;
+    it = it->next;
+  }
+  return 0;
+}
 
 template<typename E>
-E      SDAL<E>::peek_back(void)          {}
+E      SDAL<E>::peek_back(void)  {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot peek empty list");
+    return 0;
+  }
+  return tail->data;
+}
 
 template<typename E>
-E      SDAL<E>::peek_front(void)         {}
+E      SDAL<E>::peek_front(void) {
+  if (is_empty()) {
+    throw std::runtime_error(
+            "cannot peek empty list");
+    return 0;
+  }
+  return head->data;
+}
 
 template<typename E>
-bool   SDAL<E>::is_empty(void)           {}
+bool   SDAL<E>::is_empty(void) {
+  if (head == tail) {
+    return true;
+  }
+  return false;
+}
 
 template<typename E>
-bool   SDAL<E>::is_full(void)            {}
+bool   SDAL<E>::is_full(void) {
+  return false;
+}
 
 template<typename E>
-size_t SDAL<E>::length(void)             {}
+size_t SDAL<E>::length(void) {
+  size_t counter = 0;
+  Node  *it      = head;
+
+  while (it) {
+    counter++;
+    it = it->next;
+  }
+  return counter;
+}
 
 template<typename E>
-void   SDAL<E>::clear(void)              {}
+void   SDAL<E>::clear(void) {
+  // could cause memory leak
+  head = nullptr;
+  tail = nullptr;
+}
 
 template<typename E>
-bool SDAL<E  >::contains(E element,
-                         bool (*equals_to_function)(E, E))  {}
+bool SDAL<E>::contains(E element,
+                       bool (*equals_to_function)(E, E))  {
+  Node *it = head;
+
+  while (it) {
+    if (equals_to_function(it->data, element)) {
+      return true;
+    }
+    it = it->next;
+  }
+  return false;
+}
 
 template<typename E>
-void SDAL<E>::print(std::ostream& os) {}
+void SDAL<E>::print(std::ostream& os) {
+  std::string str = "";
+
+  while (it != -1) {
+    str += to_string(v.at(it)->data) + " ";
+    it   = v.at(it)->next;
+  }
+  os << str << endl;
+}
 
 template<typename E>
-E *SDAL<E  >::contents(void)          {}
+E *SDAL<E>::contents(void) {
+  size_t len = length();
+
+  E[len] * elements;
+  size_t counter = 0;
+  size_t it      = head;
+
+  while (it != -1) {
+    e[counter] = v.at(it)->data;
+    it         = v.at(it)->next;
+    counter++;
+  }
+  return elements;
+}
 
 template<typename E>
-SDAL<E>::~SDAL() {}
+SDAL<E>::~SDAL() {
+  head = nullptr;
+  tail = nullptr;
+}
 }
 #endif // ifndef _SDAL_H

@@ -323,8 +323,8 @@ void SSLL<E>::print(std::ostream& os) {
   std::string str = "";
 
   while (it) {
-    it   = it->next;
     str += to_string(it->data) + " ";
+    it   = it->next;
   }
   os << str << endl;
 }
