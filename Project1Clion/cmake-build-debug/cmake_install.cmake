@@ -1,4 +1,4 @@
-# Install script for directory: /Users/jad/CLionProjects/Project1Clion
+# Install script for directory: /Users/jad/Documents/Work/Data-Structures/Project1Clion
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/jad/CLionProjects/Project1Clion/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/jad/Documents/Work/Data-Structures/Project1Clion/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
