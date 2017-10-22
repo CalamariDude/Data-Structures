@@ -1,0 +1,6 @@
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/jad/CLionProjects/Class
+-- Configuring done
+CMake Error: CMake can not determine linker language for target: Class
+CMake Error: Cannot determine link language for target "Class".
+-- Generating done
+-- Build files have been written to: /Users/jad/CLionProjects/Class/cmake-build-debug
