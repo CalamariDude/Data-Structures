@@ -6,10 +6,10 @@
 #define BINARYTREE_BINARYTT_H
 
 #include <iostream>
-
+#include <math.h>
 template <typename  E>
 class binaryTT{
-private:
+public:
     struct Node{
         E value;
         Node * right;
@@ -19,13 +19,32 @@ private:
         }
     };
 
-
-public:
     Node * root;
     Node * curr;
-    binaryTT(int arr[], int length){
+    binaryTT(E * arr[], int length){
+        // child = 2n & 2n + 1
+        // parent = n/2
+        E * ptrarr[length];
+        for(int i = 0; i < length; i++){
+            Node * node;
+            if(arr[i]){
+                node->value = arr[i];
+            }
+            ptrarr[i] = arr[i];
+        }
+        
+        root->value = arr[0];
+        int counter = 0;
+        while( (pow((double) 2, (double) counter)) < length ) {
+            counter++;
+
+        }
 
     }
+    binaryTT(Node * root){
+        this->root = root;
+    }
+
 
     void traverse_right(){
         if(curr->right){
@@ -63,23 +82,26 @@ public:
         }
     }
 
-    void Morris_Solution(){
+    void morris_solution_inorder(){
      Node * anchor = root;
         while(anchor){
             if(!anchor->left){
                 process(anchor);
                 anchor = anchor->right;
             }
-            else
-                //find iop
-            if(iop->right == anchor){
-                iop->right = nullptr;
-                anchor = anchor->right;
-            }
-            else{
-                process(anchor);
-                iop->right = anchor;
-                anchor = anchor->left;
+            else {
+                Node *iop = anchor->left;
+                while(iop->right != nullptr && iop->right != anchor){
+                    iop = iop->right;
+                }
+                if (iop->right == anchor) {
+                    iop->right = nullptr;
+                    anchor = anchor->right;
+                } else {
+                    process(anchor);
+                    iop->right = anchor;
+                    anchor = anchor->left;
+                }
             }
         }
     }
