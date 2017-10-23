@@ -47,8 +47,8 @@
       <file leaf-file-name="BinaryTT.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BinaryTT.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+            <state relative-caret-position="395">
+              <caret line="37" column="67" lean-forward="true" selection-start-line="37" selection-start-column="67" selection-end-line="37" selection-end-column="67" />
               <folding>
                 <element signature="e#110#129#0" expanded="true" />
                 <element signature="e#157#170#0" expanded="true" />
@@ -161,12 +161,12 @@
       <updated>1508218966666</updated>
       <workItem from="1508218967955" duration="9095000" />
       <workItem from="1508703825543" duration="5093000" />
-      <workItem from="1508788234318" duration="5297000" />
+      <workItem from="1508788234318" duration="7342000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19485000" />
+    <option name="totallyTimeSpent" value="21530000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
@@ -304,8 +304,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/BinaryTT.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+        <state relative-caret-position="395">
+          <caret line="37" column="67" lean-forward="true" selection-start-line="37" selection-start-column="67" selection-end-line="37" selection-end-column="67" />
           <folding>
             <element signature="e#110#129#0" expanded="true" />
             <element signature="e#157#170#0" expanded="true" />

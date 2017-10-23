@@ -21,24 +21,34 @@ public:
 
     Node * root;
     Node * curr;
-    binaryTT(E * arr[], int length){
+    binaryTT(E * arr[], int lengthOfTree){
         // child = 2n & 2n + 1
         // parent = n/2
-        E * ptrarr[length];
-        for(int i = 0; i < length; i++){
+        //fix this indexing shit dont expect user to +1 first index
+        Node * ptrarr[lengthOfTree];//we dont use first index so +1
+        for(int i = 1; i < lengthOfTree; i++){
             Node * node;
             if(arr[i]){
                 node->value = arr[i];
             }
-            ptrarr[i] = arr[i];
+            ptrarr[i] = node;
         }
-        
-        root->value = arr[0];
+        //now we have an array of nodes to construct a tree
         int counter = 0;
-        while( (pow((double) 2, (double) counter)) < length ) {
+        while( ((int) pow(2.0, (double) counter)) < lengthOfTree) {
+                int l = (int) pow(2.0, (double) counter);
+                int r  = (int) pow(2.0, (double) (counter+1));
+                for(int i = l; i < r; i += 2){
+                    ptrarr[i/2]->left = ptrarr[i];
+                    ptrarr[i/2]->right = ptrarr[i];
+                }
+
+
             counter++;
 
         }
+
+        root = ptrarr[1];
 
     }
     binaryTT(Node * root){
