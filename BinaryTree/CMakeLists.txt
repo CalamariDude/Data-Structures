@@ -3,5 +3,5 @@ project(BinaryTree)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp ArrayTT.h ArrayTTTree.h.h BinaryTT.h)
+set(SOURCE_FILES main.cpp ArrayTT.h ArrayTTTree.h.h BinaryTT.h Heap.h)
 add_executable(BinaryTree ${SOURCE_FILES})

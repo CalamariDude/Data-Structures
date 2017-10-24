@@ -24,12 +24,11 @@ public:
     binaryTT(E * arr[], int lengthOfTree){
         // child = 2n & 2n + 1
         // parent = n/2
-        //fix this indexing shit dont expect user to +1 first index
-        Node * ptrarr[lengthOfTree];//we dont use first index so +1
-        for(int i = 1; i < lengthOfTree; i++){
+        Node * ptrarr[lengthOfTree+1];
+        for(int i = 1; i < lengthOfTree + 1; i++){
             Node * node;
-            if(arr[i]){
-                node->value = arr[i];
+            if(arr[i-1]){
+                node->value = arr[i-1];
             }
             ptrarr[i] = node;
         }
@@ -42,14 +41,11 @@ public:
                     ptrarr[i/2]->left = ptrarr[i];
                     ptrarr[i/2]->right = ptrarr[i];
                 }
-
-
             counter++;
-
         }
-
+        cleanup(root);
         root = ptrarr[1];
-
+        curr = root;
     }
     binaryTT(Node * root){
         this->root = root;
@@ -114,6 +110,45 @@ public:
                 }
             }
         }
+    }
+
+
+    void morris_solution_preorder(){
+        Node * anchor = root;
+        while(anchor){
+            if(!anchor->left){
+                process(anchor);
+                anchor = anchor->right;
+            }
+            else {
+                Node *iop = anchor->left;
+                while(iop->right != nullptr && iop->right != anchor){
+                    iop = iop->right;
+                }
+                if (iop->right == anchor) {
+                    iop->right = nullptr;
+                    anchor = anchor->right;
+                } else {
+                    process(anchor);
+                    iop->right = anchor;
+                    anchor = anchor->left;
+                }
+            }
+        }
+    }
+
+    void cleanup(Node * it){
+        if(!it){
+            return;
+        }
+        if(!it->left->value){
+            it->left = nullptr;
+        }
+        if(!it->right->value){
+            it->right = nullptr;
+        }
+        cleanup(it->left);
+        cleanup(it->right);
     }
 
     void process(Node * ptr){
