@@ -18,8 +18,9 @@ public:
         }
 
     };
+    E * thearr[];
     Heap(E * arr[], int length){
-
+            
         }
 
 };
