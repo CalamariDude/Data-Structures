@@ -44,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BinaryTT.h" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BinaryTT.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BinaryTT.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="63" column="5" lean-forward="false" selection-start-line="63" selection-start-column="5" selection-end-line="63" selection-end-column="5" />
+            <state relative-caret-position="1177">
+              <caret line="158" column="0" lean-forward="true" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
               <folding>
                 <element signature="e#110#129#0" expanded="true" />
                 <element signature="e#157#170#0" expanded="true" />
@@ -57,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Heap.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Heap.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Heap.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="12" lean-forward="false" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+            <state relative-caret-position="285">
+              <caret line="19" column="6" lean-forward="true" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
               <folding>
                 <element signature="e#112#124#0" expanded="true" />
               </folding>
@@ -86,8 +86,8 @@
         <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/ArrayTT.h" />
         <option value="$PROJECT_DIR$/ArrayTTTree.h.h" />
-        <option value="$PROJECT_DIR$/BinaryTT.h" />
         <option value="$PROJECT_DIR$/Heap.h" />
+        <option value="$PROJECT_DIR$/BinaryTT.h" />
       </list>
     </option>
   </component>
@@ -175,16 +175,15 @@
       <updated>1508218966666</updated>
       <workItem from="1508218967955" duration="9095000" />
       <workItem from="1508703825543" duration="5093000" />
-      <workItem from="1508788234318" duration="17029000" />
+      <workItem from="1508788234318" duration="19126000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31217000" />
+    <option name="totallyTimeSpent" value="33314000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1333" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -316,23 +315,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BinaryTT.h">
+    <entry file="file://$PROJECT_DIR$/Heap.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="63" column="5" lean-forward="false" selection-start-line="63" selection-start-column="5" selection-end-line="63" selection-end-column="5" />
+        <state relative-caret-position="285">
+          <caret line="19" column="6" lean-forward="true" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
           <folding>
-            <element signature="e#110#129#0" expanded="true" />
-            <element signature="e#157#170#0" expanded="true" />
+            <element signature="e#112#124#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Heap.h">
+    <entry file="file://$PROJECT_DIR$/BinaryTT.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="12" lean-forward="false" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+        <state relative-caret-position="1177">
+          <caret line="158" column="0" lean-forward="true" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
           <folding>
-            <element signature="e#112#124#0" expanded="true" />
+            <element signature="e#110#129#0" expanded="true" />
+            <element signature="e#157#170#0" expanded="true" />
           </folding>
         </state>
       </provider>

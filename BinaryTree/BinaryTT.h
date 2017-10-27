@@ -101,10 +101,10 @@ public:
                     iop = iop->right;
                 }
                 if (iop->right == anchor) {
+                    process(anchor);
                     iop->right = nullptr;
                     anchor = anchor->right;
                 } else {
-                    process(anchor);
                     iop->right = anchor;
                     anchor = anchor->left;
                 }
