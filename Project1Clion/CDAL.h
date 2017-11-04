@@ -182,13 +182,6 @@ namespace cop3530 {
             );
 
         }
-<<<<<<< HEAD
-=======
-        //get next from removed node
-        carNode * carnode = get_car_for_index(itcar, itcar->cars[it%50]->next); //get removing node
-        itcar->cars[it%50]->next = carnode->cars[itcar->cars[it%50]]->next; //set prev->next = removed->next
-        free_node_servie(itcar->cars[it%50]->next);//free the removed node
->>>>>>> 721e04035317fb481b9679895b63de40cf4eb547
     }
 
     template<typename E>
@@ -245,14 +238,6 @@ namespace cop3530 {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
-
-<<<<<<< HEAD
-=======
-        carNode * carnode = get_car_for_index(carHead, head)
-        while(position!=0){
-            position--;
-
->>>>>>> 721e04035317fb481b9679895b63de40cf4eb547
         }
     }
 
