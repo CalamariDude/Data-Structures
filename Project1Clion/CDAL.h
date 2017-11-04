@@ -107,17 +107,7 @@ namespace cop3530 {
 
 
         int get_free_node_service() {
-            carNode *carnode = carHead;
-            while (carnode) {
-                for (int i = 0; i < 50; i++) {
-                    if (carnode->cars[i]->next == -1) {
-                        return (index_maker(carnode, i));
-                    }
-                }
-                carnode = carnode->next;
-            }
-            adjustSize();
-            return get_free_node_service();
+            
         }
 
 
