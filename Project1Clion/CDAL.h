@@ -112,7 +112,7 @@ namespace cop3530 {
             return (carnode->number*50 + i);
         }
 
-        void free_node_servie(node * it);
+        void free_node_servie(int it);
 
         void adjustSize();
 
@@ -265,8 +265,9 @@ namespace cop3530 {
             position--;
         }
         //get next from removed node
-        carNode * carnode = get_car_for_index(itcar, itcar->cars[it%50]->next);
-        itcar->cars[it%50]->next = carnode->cars[itcar->cars[it%50]]->next;
+        carNode * carnode = get_car_for_index(itcar, itcar->cars[it%50]->next); //get removing node
+        itcar->cars[it%50]->next = carnode->cars[itcar->cars[it%50]]->next; //set prev->next = removed->next
+        free_node_servie(itcar->cars[it%50]->next);//free the removed node
     }
 
     template<typename E>
@@ -288,6 +289,33 @@ namespace cop3530 {
             int it = head;
         }
 
+        if(length() == 1){
+            carNode * carnode = get_car_for_index(carHead, head);
+            int val = carnode->cars[head%50]->data;
+            free_node_servie(head);
+            head = tail -2;
+            carTail = carHead;
+            return val;
+        }
+        else{
+            carNode * carnode = get_car_for_index(carTail, tail);
+            int val = carnode->cars[tail%50]->data;
+            int position = length()-1;
+            carNode * itcar  = carHead;
+            int it = head;
+            while(position != 0){
+                itcar = get_car_for_index(itcar, itcar->cars[it%50]->next);
+                //check that this doesnt double,
+                it = itcar->cars[it%50]->next;
+                position--;
+            }
+            //set itcar->next = -1
+            itcar->cars[it%50]->next = -1;
+            tail = it;
+            carTail = itcar;
+            free_node_servie(tail);
+            return val;
+        }
     }
 
     template<typename E>
@@ -302,6 +330,11 @@ namespace cop3530 {
     template<typename E>
     E      CDAL<E>::item_at(size_t position) {
 
+        carNode * carnode = get_car_for_index(carHead, head)
+        while(position!=0){
+            position--;
+
+        }
     }
 
     template<typename E>
