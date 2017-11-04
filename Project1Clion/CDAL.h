@@ -277,7 +277,17 @@ namespace cop3530 {
             );
         }
 
-        if(length() > 1 )
+        if(length() < 2){
+            free_node_servie(head);
+            head = tail = -2;
+            carTail = carHead;
+            cleanup();
+        }
+        else{
+            carNode carnode = get_car_for_index(carHead, head);
+            int it = head;
+        }
+
     }
 
     template<typename E>
@@ -286,10 +296,13 @@ namespace cop3530 {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
+
     }}
 
     template<typename E>
-    E      CDAL<E>::item_at(size_t position) {}
+    E      CDAL<E>::item_at(size_t position) {
+
+    }
 
     template<typename E>
     E      CDAL<E>::peek_back(void)          {}
