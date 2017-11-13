@@ -14,7 +14,6 @@ namespace cop3530 {
         E  cars[50];
 
         carNode() {
-            next = nullptr;
 
         }
     };
@@ -24,10 +23,13 @@ namespace cop3530 {
     public:
         int head = -2;
         int tail = -2;
-        carNode<E> *root;
+        carNode<E> * root;
+
 
         //constructor
         CDAL(){
+             root->next = nullptr;
+              std::cout << "root->next = "<< root->next << '\n';
         }
 
         // adds the specified element to the list at the specified position, shifting
@@ -229,7 +231,9 @@ namespace cop3530 {
         //head should always stays at 0.
         carNode<E> * node = carnode_at(head);
         E element = node->cars[head%50];
+        std::cout << "debugging this" << '\n';
         move_back(head);
+        std::cout << "debugging this" << '\n';
         deallocate_unused();
         return element;
     }
@@ -440,19 +444,26 @@ namespace cop3530 {
         std::cout<<"used = " << used<<std::endl;
         int unused = 0;
         carNode<E> * node = carnode_at(tail);
+        std::cout<<"line 443 does node even EXIST??  " << node->next <<std::endl;
         while(node->next){
             unused++;
             node = node->next;
+            std::cout << "unused = " << unused << std::endl;
         }
-        if(unused/used >= 1){
-            int todeallocate = unused/2;
-
+        std::cout<<"line 447"<<std::endl;
+        int todeallocate = 0;
+        if(used !=0 ){
+             if(unused/used >= 1){
+                 todeallocate = unused/2;
+               }
+          }
+        std::cout<<"line 453"<<std::endl;
         node = carnode_at(tail);
+        std::cout<<"line 455"<<std::endl;
         while(todeallocate != 0){
             node = node->next;
             todeallocate--;
         }
-   }
         node->next = nullptr;
         std::cout<<"_________________________"<<std::endl;
     }

@@ -29,8 +29,8 @@ bool push_pop(List<int> *list) {
     list->push_back(5);
     list->push_back(5);
     int i = list->pop_back();
-    std::cout << "push_pop pushbackdone" << std::endl;
     int j = list->pop_front();
+    std::cout << "push_pop pushbackdone" << std::endl;
     return i == 5 && j == 5;
 }
 
