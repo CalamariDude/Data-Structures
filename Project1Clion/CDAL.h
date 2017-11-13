@@ -11,10 +11,11 @@ namespace cop3530 {
     struct carNode {
     public:
         carNode *next;
-        node *cars[50];
+        E  cars[50];
 
         carNode() {
-            next == nullptr;
+            next = nullptr;
+
         }
     };
 
@@ -23,7 +24,11 @@ namespace cop3530 {
     public:
         int head = -2;
         int tail = -2;
-        carNode *root = nullptr;
+        carNode<E> *root;
+
+        //constructor
+        CDAL(){
+        }
 
         // adds the specified element to the list at the specified position, shifting
         // the element originally at that and those in subsequent positions one
@@ -88,9 +93,15 @@ namespace cop3530 {
         // list's elements in sequential order.
         E *contents(void) override;
 
+      #ifdef DEBUG
+     void printVector() override{
+          print(std::cout);
+     }
+      #endif
+
     private:
         //helper functions
-        carNode * carnode_at(int index);
+        carNode<E> * carnode_at(int index);
 
         int get_free_node_service();
 
@@ -108,11 +119,6 @@ namespace cop3530 {
     };
 
     template<typename E>
-    CDAL<E>::CDAL() {
-        root = new carNode();
-    }
-
-    template<typename E>
     void CDAL<E>::insert(E element, size_t position) {
         if (is_empty() || position >= length()) {
             throw std::runtime_error(
@@ -126,8 +132,8 @@ namespace cop3530 {
             push_front(element);
         }
         else{
-            move_up_from(position);
-            carNode * node = carnode_at(position);
+            move_up(position);
+            carNode<E>  * node= carnode_at(position);
             node->cars[position%50] = element;
         }
     }
@@ -137,12 +143,12 @@ namespace cop3530 {
 
         if(is_empty()){
             first_element_insert(element);
+            return;
         }
         int indexToAdd = get_free_node_service();
-        carNode * carnode = carnode_at(indexToAdd);
-        carnode->cars[indexToAdd%50] = element;
+        carNode<E> * carnode = carnode_at(indexToAdd);
+        carnode->cars[(indexToAdd%50)] = element;
         tail = indexToAdd;
-
     }
 
     template<typename E>
@@ -151,7 +157,7 @@ namespace cop3530 {
             first_element_insert(element);
         }
         move_up(0);
-        carNode * node = carnode_at(0);
+        carNode<E> * node = carnode_at(0);
         node->cars[0] = element;
         head = 0;
     }
@@ -165,7 +171,7 @@ namespace cop3530 {
             );
         }
 
-        carNode *carnode = carnode_at(position);
+        carNode<E> *carnode = carnode_at(position);
         carnode->cars[position % 50] = element;
     }
 
@@ -178,11 +184,11 @@ namespace cop3530 {
         }
         E element;
         if (position == length()) {
-            elemet = pop_back();
+            element = pop_back();
         } else if (position == 0) {
             element = pop_front();
         }
-        carNode node = carnode_at(position);
+        carNode<E>* node = carnode_at(position);
         element = node->cars[position%50];
         move_back(position);
         deallocate_unused();
@@ -191,7 +197,7 @@ namespace cop3530 {
 
     template<typename E>
     E CDAL<E>::pop_back(void) {
-        if (is_empty() || position >= length()) {
+        if (is_empty()) {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
@@ -200,11 +206,12 @@ namespace cop3530 {
         if(length() == 1){
             return remove_last_element();
         }
-
-        carNode * node = carnode_at(tail);
-        E element = node[tail%50];
+        std::cout<<"testing carnode_at"<<std::endl;
+        carNode<E> * node = carnode_at(tail);
+        E element = node->cars[tail%50];
         tail--;
         deallocate_unused();
+        std::cout<<"nope"<<std::endl;
         return element;
     }
 
@@ -220,8 +227,8 @@ namespace cop3530 {
             return remove_last_element();
         }
         //head should always stays at 0.
-        carNode * node = carnode_at(head);
-        E element = node[head%50];
+        carNode<E> * node = carnode_at(head);
+        E element = node->cars[head%50];
         move_back(head);
         deallocate_unused();
         return element;
@@ -236,33 +243,33 @@ namespace cop3530 {
 
         }
 
-        carNode * node = carnode_at(position);
-        return node[position%50];
+        carNode<E> * node = carnode_at(position);
+        return node->cars[position%50];
     }
 
     template<typename E>
     E CDAL<E>::peek_back(void) {
-        if (is_empty() || position >= length()) {
+        if (is_empty()) {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
         }
 
-        carNode * node = carnode_at(tail);
-        return node[tail%50];
+        carNode<E> * node = carnode_at(tail);
+        return node->cars[tail%50];
 
     }
 
     template<typename E>
     E CDAL<E>::peek_front(void) {
-        if (is_empty() || position >= length()) {
+        if (is_empty()) {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
         }
 
-        carNode * node = carnode_at(head);
-        return node[head%50];
+        carNode<E> * node = carnode_at(head);
+        return node->cars[head%50];
     }
 
     template<typename E>
@@ -279,10 +286,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    size_t CDAL<E>::length(void) {
-        int it = head;
-        carNode * node = carnode_at(it);
-        int counter = 0;
+    size_t CDAL<E>::length() {
         if(head != -2  && tail != -2)
             return tail-head + 1;
         else
@@ -291,24 +295,24 @@ namespace cop3530 {
 
     template<typename E>
     void CDAL<E>::clear(void) {
-        carNode * node = carnode_at(head);
-        int it = head;
-        tail = head ;
-        deallocate_unused();
-        head = tail = -2;
+         if(!is_empty()){
+              tail = head ;
+              deallocate_unused();
+              head = tail = -2;
+         }
     }
 
     template<typename E>
     bool CDAL<E>::contains(E element,
                            bool (*equals_to_function)(E, E)) {
-        if (is_empty() || position >= length()) {
+        if (is_empty()) {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
         }
 
         int it = head;
-        carNode * node = carNode_at(it);
+        carNode<E> * node = carnode_at(it);
         while(it != tail + 1){
             if(node->cars[it%50] == element){
                 return true;
@@ -316,34 +320,35 @@ namespace cop3530 {
             it++;
             node = carnode_at(it);
         }
+        return false;
     }
 
     template<typename E>
     void CDAL<E>::print(std::ostream &os) {
-        if (is_empty() || position >= length()) {
+        if (is_empty()) {
             throw std::runtime_error(
                     "cannot remove in empty list or out of bounds"
             );
         }
 
         int it = head;
-        carNode * node = carNode_at(it);
+        carNode<E> * node = carnode_at(it);
         while(it != tail + 1){
-            os << node[it%50] << " " ;
+            os << node->cars[it%50] << " " ;
             it++;
             node = carnode_at(it);
         }
     }
 
     template<typename E>
-    E *CDAL<E>::contents(void) {
-        int length = length();
-        E * arr[length];
+    E* CDAL<E>::contents(void) {
+        int size = length();
+        int * arr = new int[size];
         size_t counter = 0;
         int it = head;
-        carNode * node = carNode_at(it);
+        carNode<E> * node = carnode_at(it);
         while(it != tail + 1){
-            arr[counter] = node[it%50];
+            arr[counter] = node->cars[it%50];
             it++;
             counter++;
             node = carnode_at(it);
@@ -354,9 +359,9 @@ namespace cop3530 {
 
     //helper functions
     template<typename E>
-    carNode * carnode_at(int index){
+    carNode<E> * CDAL<E>::carnode_at(int index){
         int timestogo = index/50;
-        carNode * it = root;
+        carNode<E> * it = root;
         while(timestogo != 0 ){
             it = it->next;
             timestogo--;
@@ -365,14 +370,14 @@ namespace cop3530 {
     }
 
     template<typename E>
-    int get_free_node_service() {
+    int CDAL<E>::get_free_node_service() {
         //check if next index is the first element of next array
         if(is_empty()){
          return 0;
         }
         if((tail+1) % 50 == 0 ){
             if(!carnode_at(tail)->next){
-                carNode node = new carNode();
+                carNode<E>* node = new carNode<E>();
                 carnode_at(tail)->next = node;
             }
         }
@@ -381,24 +386,28 @@ namespace cop3530 {
 
 
     template<typename E>
-    void first_element_insert(E element){
+    void CDAL<E>::first_element_insert(E element){
         head = tail = 0;
-        root[head] = element;
+        std::cout<<"bout to"<<std::endl;
+        std::cout<<"inserting " << element <<std::endl;
+        if(root->cars[head])
+          root->cars[head] = element;
+        std::cout<<"done"<<std::endl;
     }
 
     template<typename E>
-    E remove_last_element(){
-        E element = carnode_at(head)[head%50];
+    E CDAL<E>::remove_last_element(){
+        E element = carnode_at(head)->cars[head%50];
         head = tail = -2;
         return element;
     }
 
     template<typename E>
-    void move_up(int position){
+    void CDAL<E>::move_up(int position){
 
         int it = get_free_node_service()-1; //=tail but allocates new array if needed
-        carNode * node = carnode_at(it);
-        carNode * move_up_node;
+        carNode<E> * node = carnode_at(it);
+        carNode<E> * move_up_node;
 
 
         while(it >= position){
@@ -410,10 +419,10 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void move_back(int position){
+    void CDAL<E>::move_back(int position){
         int it = position + 1;
-        carNode * node = carnode_at(it);
-        carNode * move_back_node;
+        carNode<E>* node = carnode_at(it);
+        carNode<E> * move_back_node;
         while(it <= tail){
             node = carnode_at(it);
             move_back_node[(it-1) % 50] = node[it%50];
@@ -424,23 +433,28 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void deallocate_unused(){
+    void CDAL<E>::deallocate_unused(){
+         std::cout<<"deallocate_unused"<<std::endl;
+         std::cout<<"_________________________"<<std::endl;
         int used = (tail - head)/50;
+        std::cout<<"used = " << used<<std::endl;
         int unused = 0;
-        carNode * node = carnode_at(tail);
+        carNode<E> * node = carnode_at(tail);
         while(node->next){
             unused++;
             node = node->next;
         }
         if(unused/used >= 1){
             int todeallocate = unused/2;
-        }
+
         node = carnode_at(tail);
         while(todeallocate != 0){
             node = node->next;
             todeallocate--;
         }
+   }
         node->next = nullptr;
+        std::cout<<"_________________________"<<std::endl;
     }
 
 //end of helper functions
