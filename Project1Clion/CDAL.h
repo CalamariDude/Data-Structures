@@ -28,8 +28,8 @@ namespace cop3530 {
 
         //constructor
         CDAL(){
-             root->next = nullptr;
-              std::cout << "root->next = "<< root->next << '\n';
+              root->next = nullptr;
+              std::cout << "root->next = "<< root << '\n';
         }
 
         // adds the specified element to the list at the specified position, shifting
@@ -96,7 +96,7 @@ namespace cop3530 {
         E *contents(void) override;
 
       #ifdef DEBUG
-     void printVector() override{
+     void printVector() override {
           print(std::cout);
      }
       #endif
@@ -122,9 +122,9 @@ namespace cop3530 {
 
     template<typename E>
     void CDAL<E>::insert(E element, size_t position) {
-        if (is_empty() || position >= length()) {
+        if (position < 0|| position > length()) {
             throw std::runtime_error(
-                    "cannot remove in empty list or out of bounds"
+                    "cannot insert: out of bounds"
             );
         }
         if(position == length()){
@@ -135,7 +135,7 @@ namespace cop3530 {
         }
         else{
             move_up(position);
-            carNode<E>  * node= carnode_at(position);
+            carNode<E>* node= carnode_at(position);
             node->cars[position%50] = element;
         }
     }
@@ -158,7 +158,9 @@ namespace cop3530 {
         if(is_empty()){
             first_element_insert(element);
         }
+        print(std::cout);
         move_up(0);
+        print(std::cout);
         carNode<E> * node = carnode_at(0);
         node->cars[0] = element;
         head = 0;
@@ -201,19 +203,17 @@ namespace cop3530 {
     E CDAL<E>::pop_back(void) {
         if (is_empty()) {
             throw std::runtime_error(
-                    "cannot remove in empty list or out of bounds"
+                    "cannot pop_back in empty list or out of bounds"
             );
         }
 
         if(length() == 1){
             return remove_last_element();
         }
-        std::cout<<"testing carnode_at"<<std::endl;
         carNode<E> * node = carnode_at(tail);
         E element = node->cars[tail%50];
         tail--;
         deallocate_unused();
-        std::cout<<"nope"<<std::endl;
         return element;
     }
 
@@ -221,7 +221,7 @@ namespace cop3530 {
     E CDAL<E>::pop_front(void) {
         if (is_empty()) {
             throw std::runtime_error(
-                    "cannot remove in empty list or out of bounds"
+                    "cannot pop_front in empty list or out of bounds"
             );
 
         }
@@ -231,9 +231,7 @@ namespace cop3530 {
         //head should always stays at 0.
         carNode<E> * node = carnode_at(head);
         E element = node->cars[head%50];
-        std::cout << "debugging this" << '\n';
         move_back(head);
-        std::cout << "debugging this" << '\n';
         deallocate_unused();
         return element;
     }
@@ -311,7 +309,7 @@ namespace cop3530 {
                            bool (*equals_to_function)(E, E)) {
         if (is_empty()) {
             throw std::runtime_error(
-                    "cannot remove in empty list or out of bounds"
+                    "cannot contains in empty list or out of bounds"
             );
         }
 
@@ -331,7 +329,7 @@ namespace cop3530 {
     void CDAL<E>::print(std::ostream &os) {
         if (is_empty()) {
             throw std::runtime_error(
-                    "cannot remove in empty list or out of bounds"
+                    "cannot print in empty list or out of bounds"
             );
         }
 
@@ -342,6 +340,7 @@ namespace cop3530 {
             it++;
             node = carnode_at(it);
         }
+        os << "\n";
     }
 
     template<typename E>
@@ -392,11 +391,8 @@ namespace cop3530 {
     template<typename E>
     void CDAL<E>::first_element_insert(E element){
         head = tail = 0;
-        std::cout<<"bout to"<<std::endl;
-        std::cout<<"inserting " << element <<std::endl;
         if(root->cars[head])
           root->cars[head] = element;
-        std::cout<<"done"<<std::endl;
     }
 
     template<typename E>
@@ -411,25 +407,27 @@ namespace cop3530 {
 
         int it = get_free_node_service()-1; //=tail but allocates new array if needed
         carNode<E> * node = carnode_at(it);
-        carNode<E> * move_up_node;
+        carNode<E> * move_up_node = carnode_at(it-1);
 
 
         while(it >= position){
             node = carnode_at(it);
-            move_up_node[(it+1)%50] = node[it%50];
+            move_up_node->cars[(it+1)%50] = node->cars[it%50];
             move_up_node = node;
             it--;
         }
+        tail++;
     }
 
     template<typename E>
     void CDAL<E>::move_back(int position){
         int it = position + 1;
         carNode<E>* node = carnode_at(it);
-        carNode<E> * move_back_node;
+        carNode<E>* move_back_node = new carNode<E>();
+        move_back_node = carnode_at(it - 1);
         while(it <= tail){
             node = carnode_at(it);
-            move_back_node[(it-1) % 50] = node[it%50];
+            move_back_node->cars[(it-1) % 50] = node->cars[it%50];
             move_back_node = node;
             it++;
         }
@@ -438,34 +436,25 @@ namespace cop3530 {
 
     template<typename E>
     void CDAL<E>::deallocate_unused(){
-         std::cout<<"deallocate_unused"<<std::endl;
-         std::cout<<"_________________________"<<std::endl;
         int used = (tail - head)/50;
-        std::cout<<"used = " << used<<std::endl;
         int unused = 0;
         carNode<E> * node = carnode_at(tail);
-        std::cout<<"line 443 does node even EXIST??  " << node->next <<std::endl;
         while(node->next){
             unused++;
             node = node->next;
-            std::cout << "unused = " << unused << std::endl;
         }
-        std::cout<<"line 447"<<std::endl;
         int todeallocate = 0;
         if(used !=0 ){
              if(unused/used >= 1){
                  todeallocate = unused/2;
                }
           }
-        std::cout<<"line 453"<<std::endl;
         node = carnode_at(tail);
-        std::cout<<"line 455"<<std::endl;
         while(todeallocate != 0){
             node = node->next;
             todeallocate--;
         }
         node->next = nullptr;
-        std::cout<<"_________________________"<<std::endl;
     }
 
 //end of helper functions

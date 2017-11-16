@@ -1,13 +1,14 @@
 #ifndef _MAIN_CPP
 #define _MAIN_CPP
-#define DEBUG
+//#define DEBUG
 #include "List.h"
 #include "SSLL.h"
 #include "PSLL.h"
-// #include "SDAL.h"
+ #include "SDAL.h"
 #include "CDAL.h"
 #include <iostream>
 #include <vector>
+#include <stack>
 
 // #include <cstdio>
 
@@ -21,16 +22,13 @@ void setup(List<int> *list) {
 }
 
 bool push_pop(List<int> *list) {
-    std::cout << "push_pop testing :" << std::endl;
     setup(list);
-    std::cout << "push_pop" << std::endl;
     list->push_back(5);
     list->push_back(5);
     list->push_back(5);
     list->push_back(5);
     int i = list->pop_back();
     int j = list->pop_front();
-    std::cout << "push_pop pushbackdone" << std::endl;
     return i == 5 && j == 5;
 }
 
@@ -84,63 +82,66 @@ bool push_replace_contents(List<int> *list) {
 }
 
 bool push_length_isempty(List<int> *list)   {
-    std::cout << "push_length_isempty" << std::endl;
     setup(list);
-//     std::cout<<"________________________________________________"<<std::endl;
-//     list->printVector();
-//     std::cout<<"________________________________________________"<<std::endl;
+    std::cout << "push_length_isempty" << std::endl;
     list->clear();
     list->push_back(5);
-    std::cout<<"__________________________________________"<<std::endl;
-    list->printVector();
     list->pop_back();
-    std::cout<<"__________________________________________"<<std::endl;
-    list->printVector();
 
     return(list->is_empty() || list->length( ) == 0);
 }
 
+bool push_contains(List<int> *list)   {
+    setup(list);
+    std::cout << "push_contains_remove" << std::endl;
+    list->push_back(5);
+    list->push_back(3);
+    return list->contains(3, IntCompare);
+}
+
+bool IntCompare(int a, int b){
+    if (a == b){
+        return true;
+    }
+    return false;
+}
+
+
 int main() {
 //     List<int> *ssll = new SSLL<int>();
 //     List<int> *psll = new PSLL<int> ();
-    // List<int> * sdal = new SDAL<int> ();
-    List<int> *cdal = new CDAL<int> ();
-    std::vector<List<int>  * > lists;
+     List<int> * sdal = new SDAL<int> ();
+    List<int> *cdal = new CDAL<int>();
+    std::vector<List<int> *> lists;
 //    lists.push_back(ssll);
 //     lists.push_back(psll);
-    // lists.push_back(sdal);
+     lists.push_back(sdal);
     lists.push_back(cdal);
-    for (int i = 0; i < lists.size(); i++) {
-        bool push_pop_test           = push_pop(lists.at(i));
-        // bool push_insert_remove_test = push_insert_remove(lists.at(i));
-        // bool push_peek_print_test       = push_peek_print(lists.at(i));
-        // bool push_clear_push_test       = push_clear_push(lists.at(i));
-        // bool push_replace_pop_test      = push_replace_pop(lists.at(i));
-        // bool push_replace_contents_test = push_replace_contents(lists.at(i));
-        // bool push_length_isempty_test   = push_length_isempty(lists.at(i));
-//        std::cout << "list num " << i << std::endl;
-        std::cout << "push_pop_test = " << push_pop_test << std::endl;
-//        std::cout << "push_insert_remove_test = " << push_insert_remove_test <<
-//                  std::endl;
-//         std::cout << "push_peek_print_test = "  << push_peek_print_test <<
-//         std::endl;
-//         std::cout << "push_clear_push_test = " << push_clear_push_test <<
-//         std::endl;
-//         std::cout << "push_replace_pop_test = " << push_replace_pop_test  <<
-//           std::endl;
-//         std::cout << "push_replace_contents_test = " << push_replace_contents_test
-//         <<
-//           std::endl;
-        // std::cout << "push_length_isempty_test = " << push_length_isempty_test << std::endl;
-        std::cout << std::endl;
-        // if (push_pop_test && push_insert_remove_test && push_peek_print_test  && push_clear_push_test  && push_replace_pop_test  && push_replace_contents_test && push_length_isempty_test){
-        std::cout << "all tests passed for list " << i << std::endl;
-        // }
-    }
 
+    for (int i = 0; i < lists.size(); i++) {
+        std::stack<bool > testsPassed;
+        std::cout << "list num " << i << std::endl;
+        testsPassed.push(push_pop(lists.at(i)));
+        std::cout << "push_pop_test = " << testsPassed.top() << std::endl;
+        testsPassed.push(push_insert_remove(lists.at(i)));
+        std::cout << "push_insert_remove_test = " << push_insert_remove(lists.at(i)) << std::endl;
+        testsPassed.push(push_peek_print(lists.at(i)));
+        std::cout << "push_peek_print_test = " << push_peek_print(lists.at(i)) << std::endl;
+        testsPassed.push(push_clear_push(lists.at(i)));
+        std::cout << "push_clear_push_test = " << push_clear_push(lists.at(i)) << std::endl;
+        testsPassed.push(push_replace_pop(lists.at(i)));
+        std::cout << "push_replace_pop_test = " << push_replace_pop(lists.at(i))<< std::endl;
+        testsPassed.push(push_replace_contents(lists.at(i)));
+        std::cout << "push_replace_contents_test = " <<  push_replace_contents(lists.at(i)) << std::endl;
+        testsPassed.push(push_length_isempty(lists.at(i)));
+        std::cout << "push_length_isempty_test = " << push_length_isempty(lists.at(i)) << std::endl;
+        testsPassed.push(push_contains(lists.at(i)));
+        std::cout << "push_contains_test = " << push_contains(lists.at(i)) << std::endl;
+
+        std::cout << "\n all tests passed for list " << i << std::endl;
+    }
     return 0;
 }
-
 #endif // ifndef _TEST_CPP
 #ifdef never
 //compile only

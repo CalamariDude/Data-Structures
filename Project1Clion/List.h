@@ -79,7 +79,7 @@ namespace cop3530 {
 //        ~List() ;
         //Debug
     #ifdef DEBUG
-        virtual void printVector(void) =0 ;
+        virtual void printVector(void) = 0 ;
     #endif
     };
 }

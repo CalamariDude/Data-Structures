@@ -7,61 +7,33 @@
 #define DEBUG
 #include "List.h"
 #include <vector>
-namespace cop3530 {template<typename E>
-    struct node {
-    public:
+namespace cop3530 {
 
-        int next;
-        E      data;
-        node(E data) {
-            this->data = data;
-            next       = -1 ;
-        }
-
-        node() {
-            next       = -1;
-        }
-    };
     template<typename E>
     class SDAL : public List<E>{
 
-        
-    public:
-        int head = -2;
-        int tail = -2;
-        node<E> * v[];
 
-        // no ur stupid
+    public:
+        size_t tail = SIZE_T_MAX;
         // constructor
+        E* vec;
         SDAL() {
-            head = -2;
-            tail = -2;
-            for (size_t i = 0; i < 50; i++) {
-                node<E> *add = new node<E>();
-                //change
-                v.push_back(add);
-            }
+            std::cout<<"instantiating a list of size 50"<< size << std::endl;
+            size_t size = 50;
+            vec = new int[size];
+            tail = 0;
         }
 
         SDAL(size_t size) {
-            // errors
-            std::vector<node<E> *> a(size);
-            v = a;
-
-            head = 0;
+            std::cout<<"instantiating a list of size " << size <<std::endl;
+            vec = new int[size];
             tail = 0;
-
-            for (size_t i = 0; i < size; i++) {
-                node<E> *add = new node<E>();
-                //change
-                v.push_back(add);
-            }
         }
 
         // adds the specified element to the list at the specified position, shifting
         // the element originally at that and those in subsequent positions one
         // position to the ”right.“
-        void insert(E      element,
+        void insert(E element,
                     size_t position) override;
 
         // appends the specified element to the list.
@@ -122,163 +94,93 @@ namespace cop3530 {template<typename E>
         E    * contents(void)  override;
 
 //        ~SDAL();
-        void   make_bigger();
+
+        //helper functions
+        void make_bigger();
+        void make_smaller();
         size_t find_free_node_service();
-        void   free_node(size_t position);
+        void move_up(size_t position);
+        void move_back(size_t position);
+        void balance();
+        void insert_first_element(E element);
+        void remove_last_element(E element);
 
         #ifdef DEBUG
-        void printVector(void) override;
+        void printVector(void) ;
         #endif
     };
 
     // tbd
     template<typename E>
     void SDAL<E>::insert(E element, size_t position) {
-        if (position > 1 + length()) {
+        if (position < 0 || position > length()) {
             throw std::runtime_error(
                     "cannot insert outside of array: position > 1 + length not allowed");
-
         }
-        else if (position == 0) {
+        else if(position == 0){
             push_front(element);
-            return;
         }
-        else if (position == length()) {
+        else if(position == length()+1){
             push_back(element);
-            return;
         }
-        else {
-            size_t it = head;
-            size_t prev;
-            size_t positionToAdd = find_free_node_service();
-
-            do {
-                if (position == 0) {
-                    v.at(prev)->next          = positionToAdd;
-                    v.at(positionToAdd)->next = it;
-                    v.at(positionToAdd)->data = element;
-                    return;
-                }
-                position--;
-                prev = it;
-                it   = v.at(it)->next;
-            } while (it != -2);
+        else{
+            move_up(position);
+            int insert = find_free_node_service();
+            vec[insert] = element;
         }
     }
 
     // tbd
     template<typename E>
-    void SDAL<E>::push_back(E element)               {
-        size_t positionToAdd = find_free_node_service();
-        if (is_empty()) {
-            head = positionToAdd;
-            tail = positionToAdd;
-            v.at(positionToAdd)->next = -2;
-            v.at(positionToAdd)->data = element;
-            return;
+    void SDAL<E>::push_back(E element) {
+        if(is_empty()){
+            insert_first_node(element);
         }
-
-        // prob wrong
-        v.at(positionToAdd)->next = -2;
-        v.at(positionToAdd)->data = element;
-        v.at(tail)->next = positionToAdd;
-        tail                      = positionToAdd;
+        else{
+            size_t insert = find_free_node_service();
+            vec[insert] = element;
+            tail++;
+        }
     }
 
     template<typename E>
     void SDAL<E>::push_front(E element) {
-        size_t positionToAdd = find_free_node_service();
-
-        if (is_empty()) {
-            head = positionToAdd;
-            tail = positionToAdd;
-            v.at(positionToAdd)->next = -2;
-            v.at(positionToAdd)->data = element;
-            std::cout<<"first node added("<< v.at(positionToAdd)->data<< "," <<v.at(positionToAdd)->next<< ")"<<std::endl;
-            return;
+        if(is_empty()){
+            insert_first_node(element);
         }
-
-        v.at(positionToAdd)->next = head;
-        v.at(positionToAdd)->data = element;
-        head                      = positionToAdd;
+        else{
+            move_up(0);
+            vec[0] = element;
+            tail++;
+        }
     }
 
     template<typename E>
     void SDAL<E>::replace(E      element,
                           size_t position)  {
-        if (position > (length() - 1)) {
+        if (position > (length() - 1) || position < 0) {
             throw std::runtime_error(
                     "cannot replace outside of array: position > length-1 not allowed");
-
         }
-        size_t it = head;
-
-        while (it != -2) {
-            if (position == 0) {
-                v.at(it)->data = element;
-                return;
-            }
-            position--;
-            it = v.at(it)->next;
-        }
+        vec[position] = element;
     }
 
     template<typename E>
     E SDAL<E>::remove(size_t position)  {
-        if (position > (length() - 2)) {
+        if (position > (length() - 1) || position < 0) {
             throw std::runtime_error(
-                    "cannot replace outside of array: position > length-1 not allowed");
-
+                    "cannot remove outside of array: position > length-1 not allowed");
         }
-        else if (position == length() - 1) {
-            return pop_back();
-        }
-        else if (position == 0) {
-            return pop_front();
-        }
-        size_t it   = head;
-        size_t prev = head;
-        size_t temp;
-
-        while (it != -2) {
-            if (position == 0) {
-                temp             = it;
-                v.at(prev)->next = v.at(it)->next;
-                E data = v.at(temp)->data;
-                free_node(temp);
-                return data;
-            }
-            position--;
-            it   = v.at(it)->next;
-            prev = it;
-        }
+        move_back(position);
     }
 
     template<typename E>
     E SDAL<E>::pop_back(void)           {
-
         if (is_empty()) {
             throw std::runtime_error(
                     "cannot pop off empty list");
         }
-        int prev = -2;
-        int temp = tail;
-        int it   = head;
-        while (v.at(it)->next != -2) {
-            prev = it;
-            it   = v.at(it)->next;
-        }
-        tail = prev;
-        if (prev != -2) {
-            v.at(tail)->next = -2;
-        }
-        if (tail == -2) {
-            head = -2;
-            tail = -2;
-        }
-        E data = v.at(temp)->data;
-        free_node(temp);
-        return data;
+        remove(tail);
     }
 
 
@@ -288,33 +190,17 @@ namespace cop3530 {template<typename E>
             throw std::runtime_error(
                     "cannot pop off empty list");
         }
-        int temp = head;
-        head = v.at(head)->next;
-
-        if (head == -2) {
-            head = tail = -2;
-        }
-        E data = v.at(temp)->data;
-        free_node(temp);
-        return data;
+        E element = vec[0];
+        move_back(0);
     }
 
     template<typename E>
     E      SDAL<E>::item_at(size_t position) {
-        if (position > (length() - 1)) {
+        if (position > (length() - 1) || position < 0 ) {
             throw std::runtime_error(
                     "cannot find outside of array: position > length-1 not allowed");
         }
-        int it = head;
-
-        while (it != -2) {
-            if (position == 0) {
-                return v.at(it)->data;
-            }
-            position--;
-            it = v.at(it)->next;
-        }
-        return 0;
+        return vec[position];
     }
 
     template<typename E>
@@ -323,7 +209,7 @@ namespace cop3530 {template<typename E>
             throw std::runtime_error(
                     "cannot peek empty list");
         }
-        return v.at(tail)->data;
+        return vec[tail];
     }
 
     template<typename E>
@@ -332,12 +218,12 @@ namespace cop3530 {template<typename E>
             throw std::runtime_error(
                     "cannot peek empty list");
         }
-        return v.at(head)->data;
+        return vec[0];
     }
 
     template<typename E>
     bool   SDAL<E>::is_empty(void) {
-        if (head==-2 && tail ==-2) {
+        if (length() == 0) {
             return true;
         }
         return false;
@@ -350,69 +236,55 @@ namespace cop3530 {template<typename E>
 
     template<typename E>
     size_t SDAL<E>::length(void) {
-        size_t counter = 0;
-        int it      = head;
-        std::cout<<"tail = "<< tail <<std::endl;
-        std::cout<<"it "<< it <<std::endl;
-//        std::cout<<"length() head = "<< head <<std::endl;
-        while (it != -2 && it != -1) {
-            std::cout<<"it next = "<< v.at(it)->next <<std::endl;
-            counter++;
-            it = v.at(it)->next;
+        if(tail != SIZE_T_MAX){
+            return tail+1;
         }
-        std::cout<<"length = " << counter <<std::endl;
-//        std::cout<<"counter = " << counter <<std::endl;
-        return counter;
+        return 0;
     }
 
     template<typename E>
     void   SDAL<E>::clear(void) {
-        for(size_t i = 0; i < v.size(); i++){
-            v.at(i)->next = -1;
-        }
-        head = -2;
-        tail = -2;
+        tail = SIZE_T_MAX;
+        balance();
     }
 
     template<typename E>
     bool SDAL<E>::contains(E element,
                            bool (*equals_to_function)(E, E))  {
-        int it = head;
-
-        while (it != -2) {
-            if (equals_to_function(v.at(it)->data, element)) {
+        if(is_empty()){
+            return false;
+        }
+        size_t it = 0;
+        while(it <= tail){
+            if(equals_to_function( vec[it] , element ) ){
                 return true;
             }
-            it = v.at(it)->next;
+            it++;
         }
         return false;
     }
 
     template<typename E>
     void SDAL<E>::print(std::ostream& os) {
-        std::string str = "";
-        int it = head;
-        while (it != -2) {
-            str += std::to_string(v.at(it)->data) + " ";
-            it   = v.at(it)->next;
+        size_t it = 0;
+        while(it <= tail){
+            os << vec[it] << " ";
+            it++;
         }
-        os << str << std::endl;
     }
 
     template<typename E>
     E *SDAL<E>::contents(void) {
-        size_t len = length();
+        size_t size = length();
 
-        E elements[len];
-        size_t counter = 0;
-        int it      = head;
+        //don't send them the original array
+        E * arr = new E[size];
 
-        while (it != -2) {
-            elements[counter] = v.at(it)->data;
-            it         = v.at(it)->next;
-            counter++;
+        for(int i = 0; i < size; i++ ){
+            arr[i] = vec[i];
         }
-        return elements;
+
+        return arr;
     }
 
 //    template<typename E>
@@ -421,50 +293,79 @@ namespace cop3530 {template<typename E>
 //        tail = -2;
 //    }
 
-    template<typename E>
-    void SDAL<E>::make_bigger() {
-        size_t newlength = v.size() * 1.5;
 
-        std::vector<* node<E> >  newvec(newlength);
-
-        // copy elements over
-        for (size_t i = 0; i < v.size(); i++) {
-            newvec[i] = v.at(i);
-        }
-
-        for (size_t i = v.size(); i < newlength; i++) {
-            node<E> *toAdd = new node<E>();
-            toAdd->next=-1;
-            newvec[i] = toAdd;
-        }
-        v = newvec;
-    }
     template<typename E>
-    size_t SDAL<E>::find_free_node_service() {
-        for (int i = 0; i < v.size(); i++) {
-            if (v.at(i)->next == -1) {
-                return i;
-            }
+    void SDAL<E>::make_bigger(){
+        size_t size = length();
+        size_t new_length = size * 1.5;
+        E* new_vec = new E[new_length];
+        for(int i = 0; i < size; i++){
+            new_vec[i] = vec[i];
         }
-        make_bigger();
-        return find_free_node_service();
+        //could cause problems
+        vec = new_vec;
     }
+
     template<typename E>
-    void SDAL<E>::free_node(size_t position) {
-        v.at(position)->next = -1;
-        if(is_empty()){
-            head = -2;
-            tail = -2;
+    void SDAL<E>::make_smaller(){
+
+    }
+
+    template<typename E>
+    size_t SDAL<E>::find_free_node_service(){
+        if(tail+1 > length()-1){
+            make_bigger();
+        }
+
+        return tail+1;
+    }
+
+    template<typename E>
+    void SDAL<E>::move_up(size_t position){
+        size_t it = find_free_node_service();
+        while(it > position){
+            vec[it] = vec[it-1];
+            it--;
+        }
+
+        tail++;
+    }
+
+    template<typename E>
+    void SDAL<E>::move_back(size_t position){
+        size_t it = position;
+        while(it < tail){
+            vec[it] = vec[it+1];
+            it++;
+        }
+
+        balance();
+        tail--;
+    }
+
+    template<typename E>
+    void SDAL<E>::balance(){
+        size_t length_of_array = sizeof(vec)/sizeof(*vec);//doesn't work you need another way
+        if(length_of_array/length() > 2){
+            make_smaller(length_of_array);
         }
     }
+
+    template<typename E>
+    void SDAL<E>::insert_first_element(E element){
+        vec[0] = element;
+        tail = 0;
+    }
+
+    template<typename E>
+    void SDAL<E>::remove_last_element(E element){
+        tail = SIZE_T_MAx;
+    }
+
 #ifdef DEBUG
     template<typename E>
     void SDAL<E>::printVector(){
-        for(int i = 0; i < v.size(); i++ ){
-            std::cout<<i<<" ("<<v.at( i)->data<<","<<v.at(i)->next<<")";
-            std::cout<< "" <<std::endl;
-        }
-        std::cout<<""<<std::endl;
+
     }
 #endif
 }
