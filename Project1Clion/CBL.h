@@ -2,28 +2,28 @@
 // Created by Jad Zeineddine on 9/19/17.
 //
 
-#ifndef PROJECT1CLION_SDAL_H
-#define PROJECT1CLION_SDAL_H
+#ifndef PROJECT1CLION_CBL_H
+#define PROJECT1CLION_CBL_H
 #define DEBUG
 #include "List.h"
 #include <vector>
 namespace cop3530 {
 
     template<typename E>
-    class SDAL : public List<E>{
+    class CBL : public List<E>{
 
 
     public:
         size_t tail = SIZE_T_MAX;
         // constructor
         E* vec;
-        SDAL() {
+        CBL() {
             size_t size = 50;
             vec = new E[size];
             tail = SIZE_T_MAX;
         }
 
-        SDAL(size_t size) {
+        CBL(size_t size) {
             vec = new E[size];
             tail = SIZE_T_MAX;
         }
@@ -91,7 +91,7 @@ namespace cop3530 {
         // list's elements in sequential order.
         E    * contents(void)  override;
 
-//        ~SDAL();
+//        ~CBL();
 
         //helper functions
         size_t make_bigger();
@@ -103,14 +103,14 @@ namespace cop3530 {
         void insert_first_element(E element);
         void remove_last_element(E element);
 
-        #ifdef DEBUG
+#ifdef DEBUG
         void printVector(void) ;
-        #endif
+#endif
     };
 
     // tbd
     template<typename E>
-    void SDAL<E>::insert(E element, size_t position) {
+    void CBL<E>::insert(E element, size_t position) {
         if (position < 0 || position > length()) {
             throw std::runtime_error(
                     "cannot insert outside of array: position > 1 + length not allowed");
@@ -130,7 +130,7 @@ namespace cop3530 {
 
     // tbd
     template<typename E>
-    void SDAL<E>::push_back(E element) {
+    void CBL<E>::push_back(E element) {
         if(is_empty()){
             insert_first_element(element);
         }
@@ -142,7 +142,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::push_front(E element) {
+    void CBL<E>::push_front(E element) {
         if(is_empty()){
             insert_first_element(element);
         }
@@ -154,7 +154,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::replace(E      element,
+    void CBL<E>::replace(E      element,
                           size_t position)  {
         if (position > (length() - 1) || position < 0) {
             throw std::runtime_error(
@@ -164,7 +164,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    E SDAL<E>::remove(size_t position)  {
+    E CBL<E>::remove(size_t position)  {
         if (position > (length() - 1) || position < 0) {
             throw std::runtime_error(
                     "cannot remove outside of array: position > length-1 not allowed");
@@ -175,7 +175,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    E SDAL<E>::pop_back(void)           {
+    E CBL<E>::pop_back(void)           {
         if (is_empty()) {
             throw std::runtime_error(
                     "cannot pop off empty list");
@@ -187,7 +187,7 @@ namespace cop3530 {
 
 
     template<typename E>
-    E SDAL<E>::pop_front(void)          {
+    E CBL<E>::pop_front(void)          {
         if (is_empty()) {
             throw std::runtime_error(
                     "cannot pop off empty list");
@@ -198,7 +198,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    E      SDAL<E>::item_at(size_t position) {
+    E      CBL<E>::item_at(size_t position) {
         if (position > (length() - 1) || position < 0 ) {
             throw std::runtime_error(
                     "cannot find outside of array: position > length-1 not allowed");
@@ -207,7 +207,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    E      SDAL<E>::peek_back(void)  {
+    E      CBL<E>::peek_back(void)  {
         if (is_empty()) {
             throw std::runtime_error(
                     "cannot peek empty list");
@@ -216,7 +216,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    E      SDAL<E>::peek_front(void) {
+    E      CBL<E>::peek_front(void) {
         if (is_empty()) {
             throw std::runtime_error(
                     "cannot peek empty list");
@@ -225,7 +225,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    bool   SDAL<E>::is_empty(void) {
+    bool   CBL<E>::is_empty(void) {
         if (length() == 0) {
             return true;
         }
@@ -233,12 +233,12 @@ namespace cop3530 {
     }
 
     template<typename E>
-    bool   SDAL<E>::is_full(void) {
+    bool   CBL<E>::is_full(void) {
         return false;
     }
 
     template<typename E>
-    size_t SDAL<E>::length(void) {
+    size_t CBL<E>::length(void) {
         if(tail != SIZE_T_MAX){
             return tail+1;
         }
@@ -246,13 +246,13 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void   SDAL<E>::clear(void) {
+    void   CBL<E>::clear(void) {
         tail = SIZE_T_MAX;
         balance();
     }
 
     template<typename E>
-    bool SDAL<E>::contains(E element,
+    bool CBL<E>::contains(E element,
                            bool (*equals_to_function)(E, E))  {
         if(is_empty()){
             return false;
@@ -268,7 +268,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::print(std::ostream& os) {
+    void CBL<E>::print(std::ostream& os) {
         size_t it = 0;
         while(it <= tail){
             os << vec[it] << " ";
@@ -277,7 +277,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    E *SDAL<E>::contents(void) {
+    E *CBL<E>::contents(void) {
         size_t size = length();
 
         //don't send them the original array
@@ -291,14 +291,14 @@ namespace cop3530 {
     }
 
 //    template<typename E>
-//    SDAL<E>::~SDAL() {
+//    CBL<E>::~CBL() {
 //        head = -2;
 //        tail = -2;
 //    }
 
 
     template<typename E>
-    size_t SDAL<E>::make_bigger(){
+    size_t CBL<E>::make_bigger(){
         size_t size = length();//right here
         size_t new_length = size * 1.5;
         E* new_vec = new E[new_length];
@@ -311,7 +311,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::make_smaller(size_t size){
+    void CBL<E>::make_smaller(size_t size){
         size_t len = length();
         size = (int) ((double)size* 0.75);
         E* new_vec = new E[size];
@@ -323,7 +323,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    size_t SDAL<E>::find_free_node_service(){
+    size_t CBL<E>::find_free_node_service(){
         if(tail+1 > length()-1){
             make_bigger();
         }
@@ -332,7 +332,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::move_up(size_t position){
+    void CBL<E>::move_up(size_t position){
         size_t it = find_free_node_service();
         while(it > position){
             vec[it] = vec[it-1];
@@ -343,7 +343,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::move_back(size_t position){
+    void CBL<E>::move_back(size_t position){
         size_t it = position;
         while(it < tail){
             vec[it] = vec[it+1];
@@ -355,7 +355,7 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::balance(){
+    void CBL<E>::balance(){
         size_t length_of_array = make_bigger();
         if(length() > 0) {
             if (length_of_array / length() > 2) {
@@ -365,21 +365,21 @@ namespace cop3530 {
     }
 
     template<typename E>
-    void SDAL<E>::insert_first_element(E element){
+    void CBL<E>::insert_first_element(E element){
         vec[0] = element;
         tail = 0;
     }
 
     template<typename E>
-    void SDAL<E>::remove_last_element(E element){
+    void CBL<E>::remove_last_element(E element){
         tail = SIZE_T_MAX;
     }
 
 #ifdef DEBUG
     template<typename E>
-    void SDAL<E>::printVector(){
+    void CBL<E>::printVector(){
 
     }
 #endif
 }
-#endif //PROJECT1CLION_SDAL_H
+#endif //PROJECT1CLION_CBL_H

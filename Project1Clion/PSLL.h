@@ -118,6 +118,8 @@ namespace cop3530 {
         //pops off freeelist
         Noder<E> * get_free();
 
+        void free_last_element();
+
     };
     template<typename E>
     void PSLL<E>::insert(E element, size_t position) {
@@ -154,7 +156,7 @@ namespace cop3530 {
 
     template<typename E>
     void PSLL<E>::push_back(E element) {
-        Noder<E> *toAdd = get_free();
+        Noder<E>* toAdd = get_free();
         toAdd->data=element;
         if (is_empty()) {
             head = toAdd;
@@ -167,7 +169,7 @@ namespace cop3530 {
 
     template<typename E>
     void PSLL<E>::push_front(E element) {
-        Noder<E> *toAdd = get_free();
+        Noder<E>* toAdd = get_free();
         toAdd->data=element;
 
         if (is_empty()) {
@@ -188,7 +190,6 @@ namespace cop3530 {
                     "cannot replace outside of array: position > length-1 not allowed");
         }
         Noder<E> *it = head;
-
         while (it) {
             if (position == 0) {
                 it->data = element;
@@ -201,7 +202,7 @@ namespace cop3530 {
 
     template<typename E>
     E PSLL<E>::remove(size_t position) {
-        if (position > (length() - 2)) {
+        if (position < 0 || position > (length() - 1)) {
             throw std::runtime_error(
                     "cannot replace outside of array: position > length-1 not allowed");
         }
@@ -212,21 +213,17 @@ namespace cop3530 {
             return pop_front();
         }
         Noder<E> *it   = head;
-        Noder<E> *prev = head;
-        Noder<E> *temp;
-
-        while (it) {
-            if (position == 0) {
-                temp       = it;
-                prev->next = it->next;
-                add_free(it);
-                return temp->data;
-            }
+        position--;//we want node before the position
+        while (position!=0) {
             position--;
-            it   = it->next;
-            prev = it;
+            it = it->next;
         }
-        return 0;
+
+        E element = it->next->data;
+        Noder<E>* temp = it->next->next;
+        add_free(it->next);
+        it->next = temp;
+        return element;
     }
 
     template<typename E>
@@ -235,24 +232,23 @@ namespace cop3530 {
             throw std::runtime_error(
                     "cannot pop off empty list");
         }
-        Noder<E> *prev = nullptr;
-        Noder<E> *temp = tail;
-        Noder<E> *it   = head;
 
-        while (it->next) {
-            prev = it;
-            it   = it->next;
+        E element = tail->data;
+
+        if(length() == 1){
+            free_last_element();
+            return element;
         }
+
+        Noder<E> *prev = head;
+        while (prev ->next && prev->next != tail) {
+            prev = prev->next;
+        }
+
         add_free(tail);
         tail = prev;
 
-        if (prev) {
-            tail->next = nullptr;
-        }
-        else{
-            head = nullptr;
-        }
-        return temp->data;
+        return element;
     }
 
     template<typename E>
@@ -261,16 +257,16 @@ namespace cop3530 {
             throw std::runtime_error(
                     "cannot pop off empty list");
         }
-        Noder<E> *temp = head;
+        E element = head->data;
 
-        if (head == tail) {
-            add_free(head);
-            head = tail = nullptr;
+        if(length() == 1){
+            free_last_element();
+            return element;
         }
-        else {
-            add_free(head);
-            head = head->next; // could equal nullptr
-        }
+        Noder<E>* temp = head->next;
+        add_free(head);
+        head = temp;
+
         return temp->data;
     }
 
@@ -454,6 +450,13 @@ namespace cop3530 {
         }
 
         return get_free();
+    }
+
+    template<typename E>
+    void PSLL<E>::free_last_element(){
+        add_free(head);
+        head = nullptr;
+        tail = nullptr;
     }
 }
 

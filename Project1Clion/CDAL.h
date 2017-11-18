@@ -14,7 +14,7 @@ namespace cop3530 {
         E  cars[50];
 
         carNode() {
-
+            next = nullptr;
         }
     };
 
@@ -28,8 +28,7 @@ namespace cop3530 {
 
         //constructor
         CDAL(){
-              root->next = nullptr;
-              std::cout << "root->next = "<< root << '\n';
+            root = new carNode<E>();
         }
 
         // adds the specified element to the list at the specified position, shifting
@@ -96,9 +95,9 @@ namespace cop3530 {
         E *contents(void) override;
 
       #ifdef DEBUG
-     void printVector() override {
-          print(std::cout);
-     }
+//     void printVector() override {
+//          print(std::cout);
+//     }
       #endif
 
     private:
@@ -158,9 +157,7 @@ namespace cop3530 {
         if(is_empty()){
             first_element_insert(element);
         }
-        print(std::cout);
         move_up(0);
-        print(std::cout);
         carNode<E> * node = carnode_at(0);
         node->cars[0] = element;
         head = 0;
@@ -187,7 +184,7 @@ namespace cop3530 {
             );
         }
         E element;
-        if (position == length()) {
+        if (position == length()-1) {
             element = pop_back();
         } else if (position == 0) {
             element = pop_front();
@@ -229,8 +226,8 @@ namespace cop3530 {
             return remove_last_element();
         }
         //head should always stays at 0.
-        carNode<E> * node = carnode_at(head);
-        E element = node->cars[head%50];
+        carNode<E> * node = carnode_at(0);
+        E element = node->cars[0];
         move_back(head);
         deallocate_unused();
         return element;
@@ -391,8 +388,10 @@ namespace cop3530 {
     template<typename E>
     void CDAL<E>::first_element_insert(E element){
         head = tail = 0;
-        if(root->cars[head])
-          root->cars[head] = element;
+        if(root->cars){
+            root->cars[0] = element;
+        }
+
     }
 
     template<typename E>
