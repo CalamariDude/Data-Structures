@@ -6,6 +6,7 @@
 #include "PSLL.h"
  #include "SDAL.h"
 #include "CDAL.h"
+#include "CBL.h"
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -134,11 +135,13 @@ int main() {
      List<int> *psll = new PSLL<int> ();
     List<int> * sdal = new SDAL<int> ();
     List<int> *cdal = new CDAL<int>();
+    List<int> *cbl = new CBL<int>();
     std::vector<List<int> *> lists;
     lists.push_back(ssll);
     lists.push_back(psll );
     lists.push_back(sdal);
     lists.push_back(cdal);
+    lists.push_back(cbl);
 
     for (int i = 0; i < lists.size(); i++) {
         std::vector< bool > testsPassed;
