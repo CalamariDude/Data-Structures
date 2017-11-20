@@ -149,7 +149,7 @@ int main() {
         std::cout << "\tTESTING LIST NUMBER: " << i <<
                 "\n_________________________________________" <<std::endl;
 
-        testsPassed.push_back(push_pop(lists.at(i)));
+//        testsPassed.push_back(push_pop(lists.at(i)));
         testsPassed.push_back(push_insert_remove(lists.at(i)));
         testsPassed.push_back(push_peek_print(lists.at(i)));
         testsPassed.push_back(push_clear_push(lists.at(i)));
