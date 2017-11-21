@@ -267,7 +267,7 @@ namespace cop3530 {
         add_free(head);
         head = temp;
 
-        return temp->data;
+        return element;
     }
 
     template<typename E>

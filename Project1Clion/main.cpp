@@ -14,8 +14,6 @@
 // #include <cstdio>
 
 using namespace cop3530;
-std::vector<int> a(100);
-std::vector<int> b(20);
 std::vector<int> c(75);
 
 void setup(List<int> *list) {
@@ -24,33 +22,32 @@ void setup(List<int> *list) {
 
 bool push_pop(List<int> *list) {
     setup(list);
-    std::cout << "running push_pop test..." << std::endl;
-    list->push_back(5);
-    list->print(std::cout);
-    list->push_back(5);
-    list->print(std::cout);
-    list->push_back(5);
-    list->print(std::cout);
+    for(int i = 0; i < 90; i++ ){
+        list->push_back(5);
+    }
+    for(int i = 0; i < 88; i++ ){
+        list->pop_back();
+    }
+    std::cout <<"length = " << list -> length()<< std::endl;
     int i = list->pop_back();
     int j = list->pop_front();
-    std::cout<<"i = " << i << " j = " << j <<std::endl;
-
     return i == 5 && j == 5;
 }
 
 bool push_insert_remove(List<int> *list)    {
     setup(list);
-    std::cout << "running push_insert_remove test..." << std::endl;
+    std::cout << "\nrunning push_insert_remove test..." << std::endl;
     list->push_back(5);
     list->push_front(5);
     list->insert(5, 1);
     int i = list->remove(1);
+    std::cout<<"i = "<< i <<std::endl;
     return i==5;
 }
 
 bool push_peek_print(List<int> *list)       {
     setup(list);
-    std::cout << "running push_peek_print test..." << std::endl;
+    std::cout << "\nrunning push_peek_print test..." << std::endl;
     list->push_back(5);
     int i = list->peek_back();
     int j = list->peek_front();
@@ -60,7 +57,7 @@ bool push_peek_print(List<int> *list)       {
 
 bool push_clear_push(List<int> *list)       {
     setup(list);
-    std::cout << "running push_clear_push test..." << std::endl;
+    std::cout << "\nrunning push_clear_push test..." << std::endl;
     list->push_back(5);
     list->push_back(5);
     list->push_back(5);
@@ -70,7 +67,7 @@ bool push_clear_push(List<int> *list)       {
 
 bool push_replace_pop(List<int> *list)      {
     setup(list);
-    std::cout << "running push_replace_pop test..." << std::endl;
+    std::cout << "\nrunning push_replace_pop test..." << std::endl;
     list->push_back(5);
     list->push_back(5);
     list->push_back(5);
@@ -80,7 +77,7 @@ bool push_replace_pop(List<int> *list)      {
 
 bool push_replace_contents(List<int> *list) {
     setup(list);
-    std::cout << "running push_replace_contents test..." << std::endl;
+    std::cout << "\nrunning push_replace_contents test..." << std::endl;
     list->push_back(5);
     list->replace(5, 0);
     int *arr = list->contents();
@@ -89,7 +86,7 @@ bool push_replace_contents(List<int> *list) {
 
 bool push_length_isempty(List<int> *list)   {
     setup(list);
-    std::cout << "running push_length_isempty test..." << std::endl;
+    std::cout << "\nrunning push_length_isempty test..." << std::endl;
     list->clear();
     list->push_back(5);
     list->pop_back();
@@ -107,9 +104,10 @@ bool IntCompare(int a, int b){
 
 bool push_contains(List<int> *list)   {
     setup(list);
-    std::cout << "running push_contains_remove test..." << std::endl;
-    list->push_back(5);
-    list->push_back(3);
+    std::cout << "\nrunning push_contains_remove test..." << std::endl;
+    list->push_back(0);
+    list->push_front(3);
+    list->push_back(9);
     return list->contains(3, IntCompare);
 }
 
@@ -150,7 +148,7 @@ int main() {
         std::cout << "\tTESTING LIST NUMBER: " << i <<
                 "\n_________________________________________" <<std::endl;
 
-//        testsPassed.push_back(push_pop(lists.at(i)));
+        testsPassed.push_back(push_pop(lists.at(i)));
         testsPassed.push_back(push_insert_remove(lists.at(i)));
         testsPassed.push_back(push_peek_print(lists.at(i)));
         testsPassed.push_back(push_clear_push(lists.at(i)));

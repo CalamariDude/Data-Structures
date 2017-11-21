@@ -99,7 +99,7 @@ namespace cop3530 {
 //        ~CBL();
 
         //helper functions
-        size_t make_bigger();
+        void make_bigger();
         void make_smaller(size_t length);
         size_t find_free_node_service(int isfront);
         void move_up(size_t position);
@@ -130,9 +130,16 @@ namespace cop3530 {
             push_back(element);
         }
         else{
+            std::cout << "print vector 1" << std::endl;
+            print(std::cout);
             move_up(position);
+            std::cout << "print vector 2" << std::endl;
+            print(std::cout);
             size_t insert = find_free_node_service(0);
             vec[insert] = element;
+            std::cout << "print vector 3" << std::endl;
+            print(std::cout);
+
         }
     }
 
@@ -144,7 +151,8 @@ namespace cop3530 {
         }
         else{
             size_t insert = find_free_node_service(0);
-            vec[insert] = element;
+            vec[decrement(insert)] = element;
+            increment(tail);
         }
     }
 
@@ -156,6 +164,7 @@ namespace cop3530 {
         else{
             size_t insert = find_free_node_service(1);
             vec[insert] = element;
+            decrement(head);
         }
     }
 
@@ -166,12 +175,14 @@ namespace cop3530 {
             throw std::runtime_error(
                     "cannot replace outside of array: position > length-1 not allowed");
         }
-        vec[head] = element;
+        vec[position_at(position)] = element;
 
     }
 
     template<typename E>
     E CBL<E>::remove(size_t position)  {
+        print(std::cout);
+        std::cout<<"position requested for removal = " << position << "position_at function = " << position_at(position) << std::endl;
         if (position > (length() - 1) || position < 0) {
             throw std::runtime_error(
                     "cannot remove outside of array: position > length-1 not allowed");
@@ -179,13 +190,14 @@ namespace cop3530 {
         if(position == 0){
             return pop_front();
         }
-
         if(position - length()-1){
             return pop_back();
         }
 
+        std::cout<<"position_at(position)" << position_at(position) <<std::endl;
         E element = vec[position_at(position)];
         move_back(position);
+        balance();
         return element;
     }
 
@@ -193,10 +205,10 @@ namespace cop3530 {
     E CBL<E>::pop_back(void)           {
         if (is_empty()) {
             throw std::runtime_error(
-                    "cannot pop off empty list");
+                    "cannot pop_back off empty list");
         }
-        E element = vec[tail];
-        decrement(tail);
+        E element = vec[decrement(tail)];
+        balance();
         return element;
     }
 
@@ -205,10 +217,11 @@ namespace cop3530 {
     E CBL<E>::pop_front(void)          {
         if (is_empty()) {
             throw std::runtime_error(
-                    "cannot pop off empty list");
+                    "cannot pop_top off empty list");
         }
         E element = vec[head];
         increment(head);
+        balance();
         return element;
     }
 
@@ -227,7 +240,8 @@ namespace cop3530 {
             throw std::runtime_error(
                     "cannot peek empty list");
         }
-        return vec[tail];
+        size_t tailtemp = tail;
+        return vec[decrement(tailtemp)];
     }
 
     template<typename E>
@@ -258,7 +272,7 @@ namespace cop3530 {
             return tail-head;
         }
         else if (tail < head){
-            return head-tail;
+            return (vecSize-head) + tail;
         }
         return 0;
     }
@@ -316,29 +330,38 @@ namespace cop3530 {
 
 
     template<typename E>
-    size_t CBL<E>::make_bigger(){
+    void CBL<E>::make_bigger(){
+        std::cout<<"before make_bigger () ";
+        print(std::cout);
+        std::cout<<""<<std::endl;
         size_t size = length();
-        size_t new_length = size * 1.5;
+        std::cout<<"length = " << size <<std::endl;
+        size_t new_length = vecSize * 1.5;
         E* new_vec = new E[new_length];
-        for(size_t i = head, j = 0; i < size; increment(i), j ++){
+        for(size_t i = head, j = 0; j < size; increment(i), j++){
             new_vec[j] = vec[i];
         }
         //could cause problems
         vec = new_vec;
+        vecSize = new_length;
         head = 0;
         tail = size;
-        return new_length;
+        std::cout << "Made bigger, with vecsize = " << vecSize << " tail = " << tail << std::endl;
+        std::cout<<"after make bigger ()";
+        print(std::cout);
+        std::cout<<""<<std::endl;
     }
 
     template<typename E>
     void CBL<E>::make_smaller(size_t size){
-        size_t len = vecSize;
-        size_t newsize = (size_t) ((double)len* 0.75);
+        size_t newsize = (size_t) ((double)vecSize* 0.75);
         E* new_vec = new E[newsize];
 
-        for(size_t i = head, j = 0; i < len; increment(i), j++){
+        for(size_t i = head, j = 0; i != tail; increment(i), j++){
             new_vec[j] = vec[i];
         }
+        std::cout << "Made smaller, with vecsize = " << vecSize << " tail = " << tail << " and size = " << size << std::endl;
+        vecSize = newsize;
         head = 0;
         tail = length();
     }
@@ -347,7 +370,7 @@ namespace cop3530 {
     size_t CBL<E>::find_free_node_service(int isFront){
         size_t it;
         if(isFront){
-             it = head;
+            it = head;
             if(decrement(it) == tail){
                 make_bigger();
                 it = 0;
@@ -369,11 +392,15 @@ namespace cop3530 {
     template<typename E>
     void CBL<E>::move_up(size_t position){
         size_t it = find_free_node_service(0);
+        increment(it);
+        tail = it;
+        std::cout<<"Got position to move up to = " << it <<std::endl;
         while(it > position){
+            std::cout<<"moving " << vec[decrement(it)] << " to " << vec[increment(it)] <<std::endl;
             vec[it] = vec[decrement(it)];
         }
 
-        increment(tail);
+        std::cout<<"tail = " << tail <<std::endl;
     }
 
     template<typename E>
@@ -411,15 +438,18 @@ namespace cop3530 {
     template<typename E>
     size_t CBL<E>::increment(size_t &pos){
         size_t size = vecSize;
-        if(pos+1 % size == 0 ){
+        if(++pos % size == 0 ){
             pos = 0;
         }
         return pos;
     }
     template<typename E>
     size_t CBL<E>::decrement(size_t &pos){
-        if( pos -1 < 0 ){
+        if( pos == 0){
             pos = vecSize-1;
+        }
+        else{
+            pos--;
         }
         return pos;
     }

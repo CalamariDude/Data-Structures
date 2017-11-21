@@ -141,7 +141,6 @@ namespace cop3530 {
 
     template<typename E>
     void CDAL<E>::push_back(E element) {
-
         if(is_empty()){
             first_element_insert(element);
             return;
