@@ -130,15 +130,9 @@ namespace cop3530 {
             push_back(element);
         }
         else{
-            std::cout << "print vector 1" << std::endl;
-            print(std::cout);
             move_up(position);
-            std::cout << "print vector 2" << std::endl;
-            print(std::cout);
             size_t insert = find_free_node_service(0);
             vec[insert] = element;
-            std::cout << "print vector 3" << std::endl;
-            print(std::cout);
 
         }
     }
@@ -181,8 +175,6 @@ namespace cop3530 {
 
     template<typename E>
     E CBL<E>::remove(size_t position)  {
-        print(std::cout);
-        std::cout<<"position requested for removal = " << position << "position_at function = " << position_at(position) << std::endl;
         if (position > (length() - 1) || position < 0) {
             throw std::runtime_error(
                     "cannot remove outside of array: position > length-1 not allowed");
@@ -194,7 +186,6 @@ namespace cop3530 {
             return pop_back();
         }
 
-        std::cout<<"position_at(position)" << position_at(position) <<std::endl;
         E element = vec[position_at(position)];
         move_back(position);
         balance();
@@ -331,11 +322,7 @@ namespace cop3530 {
 
     template<typename E>
     void CBL<E>::make_bigger(){
-        std::cout<<"before make_bigger () ";
-        print(std::cout);
-        std::cout<<""<<std::endl;
         size_t size = length();
-        std::cout<<"length = " << size <<std::endl;
         size_t new_length = vecSize * 1.5;
         E* new_vec = new E[new_length];
         for(size_t i = head, j = 0; j < size; increment(i), j++){
@@ -346,10 +333,6 @@ namespace cop3530 {
         vecSize = new_length;
         head = 0;
         tail = size;
-        std::cout << "Made bigger, with vecsize = " << vecSize << " tail = " << tail << std::endl;
-        std::cout<<"after make bigger ()";
-        print(std::cout);
-        std::cout<<""<<std::endl;
     }
 
     template<typename E>
@@ -360,7 +343,6 @@ namespace cop3530 {
         for(size_t i = head, j = 0; i != tail; increment(i), j++){
             new_vec[j] = vec[i];
         }
-        std::cout << "Made smaller, with vecsize = " << vecSize << " tail = " << tail << " and size = " << size << std::endl;
         vecSize = newsize;
         head = 0;
         tail = length();
@@ -394,13 +376,10 @@ namespace cop3530 {
         size_t it = find_free_node_service(0);
         increment(it);
         tail = it;
-        std::cout<<"Got position to move up to = " << it <<std::endl;
         while(it > position){
-            std::cout<<"moving " << vec[decrement(it)] << " to " << vec[increment(it)] <<std::endl;
             vec[it] = vec[decrement(it)];
         }
 
-        std::cout<<"tail = " << tail <<std::endl;
     }
 
     template<typename E>

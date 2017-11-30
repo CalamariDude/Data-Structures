@@ -356,6 +356,8 @@ namespace cop3530 {
         }
         else{
             move_up(position);
+            std::cout<<"\nafter move_up " <<std::endl;
+            print(std::cout);
             int insert = find_free_node_service();
             vec[insert] = element;
         }

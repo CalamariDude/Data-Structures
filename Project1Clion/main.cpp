@@ -30,7 +30,6 @@ bool push_pop(List<int> *list) {
     for(int i = 0; i < 88; i++ ){
         list->pop_back();
     }
-    std::cout <<"length = " << list -> length()<< std::endl;
     int i = list->pop_back();
     int j = list->pop_front();
     return i == 5 && j == 5;
@@ -39,11 +38,31 @@ bool push_pop(List<int> *list) {
 bool push_insert_remove(List<int> *list)    {
     setup(list);
     std::cout << "\nrunning push_insert_remove test..." << std::endl;
+    list->push_back(1);
+    std::cout << "after push_back "  << std::endl;
+    list->print(std::cout);
+    list->push_front(2);
+    std::cout << "\nafter push_front"  << std::endl;
+    list->print(std::cout);
+    list->insert(3, 1);
+    std::cout << "\nafter insert"  << std::endl;
+    list->print(std::cout);
+    list->insert(4, 1);
+    std::cout << "\nafter insert"  << std::endl;
+    list->print(std::cout);
+    list->insert(41, 1);
+    std::cout << "\nafter insert"  << std::endl;
+    list->print(std::cout);
+    list->insert(42, 1);
+    std::cout << "\nafter insert"  << std::endl;
+    list->print(std::cout);
     list->push_back(5);
-    list->push_front(5);
-    list->insert(5, 1);
+    std::cout << "\nafter push_back "  << std::endl;
+    list->print(std::cout);
+    list->push_front(6);
+    std::cout << "\nafter push_front"  << std::endl;
+    list->print(std::cout);
     int i = list->remove(1);
-    std::cout<<"i = "<< i <<std::endl;
     return i==5;
 }
 
@@ -137,7 +156,7 @@ int main() {
     List<int> *cdal = new CDAL<int>();
     List<int> *cbl = new CBL<int>();
     std::vector<List<int> *> lists;
-//    lists.push_back(ssll);
+    lists.push_back(ssll);
     lists.push_back(psll );
     lists.push_back(sdal);
     lists.push_back(cdal);
