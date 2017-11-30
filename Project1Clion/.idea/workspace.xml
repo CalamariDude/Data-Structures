@@ -128,16 +128,9 @@
       <file leaf-file-name="SDAL.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SDAL.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="698">
-              <caret line="228" column="8" selection-start-line="228" selection-start-column="8" selection-end-line="228" selection-end-column="8" />
-              <folding>
-                <element signature="e#1017#1101#0" expanded="false" />
-                <element signature="e#1115#1311#0" expanded="false" />
-                <element signature="e#1324#1551#0" expanded="false" />
-                <element signature="e#1564#1822#0" expanded="false" />
-                <element signature="e#2092#2379#0" expanded="false" />
-                <element signature="e#2392#2536#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="2314">
+              <caret line="261" column="9" selection-start-line="261" selection-start-column="9" selection-end-line="261" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -426,12 +419,12 @@
       <workItem from="1511197172293" duration="28000" />
       <workItem from="1511197385794" duration="23340000" />
       <workItem from="1511303516861" duration="18848000" />
-      <workItem from="1511920321009" duration="14656000" />
+      <workItem from="1511920321009" duration="17033000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135266000" />
+    <option name="totallyTimeSpent" value="137643000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1280" y="22" width="2560" height="1418" extended-state="6" />
@@ -443,7 +436,7 @@
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15233786" sideWeight="0.5013785" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18099548" sideWeight="0.4986215" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18099548" sideWeight="0.4986215" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295626" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1105,16 +1098,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SDAL.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="698">
-          <caret line="228" column="8" selection-start-line="228" selection-start-column="8" selection-end-line="228" selection-end-column="8" />
-          <folding>
-            <element signature="e#1017#1101#0" expanded="false" />
-            <element signature="e#1115#1311#0" expanded="false" />
-            <element signature="e#1324#1551#0" expanded="false" />
-            <element signature="e#1564#1822#0" expanded="false" />
-            <element signature="e#2092#2379#0" expanded="false" />
-            <element signature="e#2392#2536#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="2314">
+          <caret line="261" column="9" selection-start-line="261" selection-start-column="9" selection-end-line="261" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>

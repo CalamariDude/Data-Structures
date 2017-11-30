@@ -34,61 +34,63 @@ namespace cop3530 {
             using self_reference = SDAL_Iter&;
 
         private:
-            size_t here;
+            const SDAL* sdal;
+            E* here;
 
         public:
-            explicit SDAL_Iter(size_t start = SIZE_T_MAX):
-                    here(start) {
+            explicit SDAL_Iter(E * start = nullptr, SDAL * vector = nullptr): // diff
+                    here(start), sdal(vector) {
             }
             SDAL_Iter(const SDAL_Iter& src) :
-                    here(src.here) {
+                    here(src.here) , sdal(src.sdal){
             }
 
             reference operator*() const {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
-                return vec[here];
+                return *here;
             }
             //pointer operator
             pointer operator->() const {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
-                return &vec[here];
+                return here;
             }
             //pointer operator
             self_reference operator=(const SDAL_Iter& src) {
                 if (*this == src) {
                     return *this;
                 }
-                vec[here] = src.vec[src.here];
+                sdal = src.sdal;
+                here = src.here;
                 return *this;
             }
             //preinc
             self_reference operator++() {
-                if (here != SIZE_T_MAX) {
+                if (!here ) {
                     throw std::runtime_error("null node");
                 }
-                here = here+1;
+                here++;
                 return *this;
             }
             //post inc
             self_type operator++(int) {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
                 SDAL_Iter iter(*this);
-                here = vec[here+1];
+                here++;
                 return iter;
             }
             //equals operator
             bool operator==(const SDAL_Iter& rhs) const {
-                return vec[here] == rhs.vec[rhs.here];
+                return here  == rhs.here;
             }
             //not equals operator
             bool operator!=(const SDAL_Iter& rhs) const {
-                return vec[here] != rhs.vec[rhs.here];
+                return here != rhs.here;
             }
         };
 
@@ -107,58 +109,60 @@ namespace cop3530 {
             using iterator_category = std::forward_iterator_tag;
 
         private:
-            const size_t here;
+            const SDAL* sdal;
+            const E* here;
 
         public:
-            explicit SDAL_Const_Iter(size_t start = SIZE_T_MAX) :
+            explicit SDAL_Const_Iter(E * start = nullptr, SDAL * sdal = nullptr) : // diff
                     here(start) {
             }
 
             SDAL_Const_Iter(const SDAL_Const_Iter& src) :
-                    here(here != SIZE_T_MAX) {
+                    here(!here) {
             }
             //pointer operator
             reference operator*() const {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
-                return vec[here];
+                return *here;
             }
             //pointer operator
             pointer operator->() const {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
-                return &vec[here];
+                return here;
             }
 
             self_reference operator=(const SDAL_Const_Iter& src) {
                 if (*this == src) {
                     return *this;
                 }
+                sdal = src.sdal;
                 here = src.here;
                 return *this;
             }
             //pre inc
             self_reference operator++() {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
-                here = here+1;
+                here++;
                 return *this;
             }
             //post inc
             self_type operator++(int) {
-                if (here != SIZE_T_MAX) {
+                if (!here) {
                     throw std::runtime_error("null node");
                 }
                 SDAL_Const_Iter iter(*this);
-                here = here + 1;
+                here++;
                 return iter;
             }
             //equals operator
             bool operator==(const SDAL_Const_Iter& rhs) const {
-                if(vec[here] == rhs.vec[rhs.here]){
+                if(here != rhs.here){
                     return true;
                 }
                 return false;
@@ -198,13 +202,7 @@ namespace cop3530 {
             if (position > length() - 1) {
                 throw std::runtime_error("out of bounds");
             }
-            size_t it = 0;
-            int counter = 0;
-            while(counter < position){
-                it = it + 1 ;
-                counter++;
-            }
-            return vec[it];
+            return vec[position];
         }
 
         //move operators
@@ -213,13 +211,8 @@ namespace cop3530 {
                 throw std::runtime_error("out of bounds");
             }
             size_t it = 0;
-            int counter = 0;
-            while(counter < position){
-                it = it + 1;
-                counter++;
-            }
 
-            return vec[it];
+            return vec[position];
         }
 
 
@@ -227,7 +220,7 @@ namespace cop3530 {
         SDAL(const SDAL& sdal) {
             //don't need to clear since this is new ssll
             tail = SIZE_T_MAX;
-            it = 0;
+            size_t it = 0;
 
             size_t size = sdal.length();
             vec = new E[size];
@@ -240,7 +233,7 @@ namespace cop3530 {
         }
 
         //copy assigment constructor
-        SSLL& operator=(const SSLL& sdal) {
+        SDAL& operator=(const SDAL& sdal) {
             if (&sdal== this)
                 return *this;
             //clear before adding new
