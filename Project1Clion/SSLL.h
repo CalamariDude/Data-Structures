@@ -22,10 +22,257 @@ namespace cop3530 {
 
     template<typename E>
     class SSLL : public List<E>{
-
-
         Node<E> *head;
         Node<E> *tail;
+
+    public:
+        class SSLL_Iter
+        {
+        public:
+            //--------------------------------------------------
+            // type aliases
+            //--------------------------------------------------
+            using value_type = E;
+            using difference_type = std::ptrdiff_t;
+            using reference = E&;
+            using pointer = E*;
+            using iterator_category = std::forward_iterator_tag;
+            using self_type = SSLL_Iter;
+            using self_reference = SSLL_Iter&;
+
+        private:
+            Node<E>* here;
+
+        public:
+            explicit SSLL_Iter(Node<E>* start = nullptr) :
+                    here(start) {
+            }
+            SSLL_Iter(const SSLL_Iter& src) :
+                    here(src.here) {
+            }
+
+            reference operator*() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return here->data;
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return &here->data;
+            }
+            //pointer operator
+            self_reference operator=(const SSLL_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                here = src.here;
+                return *this;
+            }
+            //preinc
+            self_reference operator++() {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                here = here->next;
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                SSLL_Iter iter(*this);
+                here = here->next;
+                return iter;
+            }
+            //equals operator
+            bool operator==(const SSLL_Iter& rhs) const {
+                return here == rhs.here;
+            }
+            //not equals operator
+            bool operator!=(const SSLL_Iter& rhs) const {
+                return here != rhs.here;
+            }
+        };
+
+        class SSLL_Const_Iter
+        {
+        public:
+            //--------------------------------------------------
+            // type aliases
+            //--------------------------------------------------
+            using value_type = E ;
+            using difference_type = std::ptrdiff_t ;
+            using reference = const E& ;
+            using pointer = const E* ;
+
+            using self_type = SSLL_Const_Iter ;
+            using self_reference = SSLL_Const_Iter&;
+            using iterator_category = std::forward_iterator_tag;
+
+        private:
+            const Node<E>* here;
+
+        public:
+            explicit SSLL_Const_Iter(Node<E>* start = nullptr) :
+                    here(start) {
+            }
+
+            SSLL_Const_Iter(const SSLL_Const_Iter& src) :
+                    here(src.here) {
+            }
+            //pointer operator
+            reference operator*() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return here->data;
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return &here->data;
+            }
+
+            self_reference operator=(const SSLL_Const_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                here = src.here;
+                return *this;
+            }
+            //pre inc
+            self_reference operator++() {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                here = here->next;
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                SSLL_Const_Iter iter(*this);
+                here = here->next;
+                return iter;
+            }
+            //equals operator
+            bool operator==(const SSLL_Const_Iter& rhs) const {
+                if(here == rhs.here){
+                    return true;
+                }
+                return false;
+            }
+            //not equals operator
+            bool operator!=(const SSLL_Const_Iter& rhs) const {
+                if(here != rhs.here){
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        using size_t = std::size_t ;
+        using value_type = E ;
+        using iterator = SSLL_Iter ;
+        using const_iterator = SSLL_Const_Iter ;
+
+        // iterators over a non-const List
+        iterator begin() {
+            return SSLL_Iter(head);
+        }
+        iterator end() {
+            return SSLL_Iter();
+        }
+
+        // iterators over a const List
+        const_iterator begin() const {
+            return SSLL_Const_Iter(head);
+        }
+        const_iterator end() const {
+            return SSLL_Const_Iter();
+        }
+
+        //move operators
+        E& operator[](size_t position) {
+            if (position > length() - 1) {
+                throw std::runtime_error("out of bounds");
+            }
+            Node<E>* it = head;
+            int counter = 0;
+            while(counter < position){
+                it = it->next;
+                counter++;
+            }
+            return it->data;
+        }
+
+        //move operators
+        E const& operator[](size_t position) const {
+            if (position > length() - 1) {
+                throw std::runtime_error("out of bounds");
+            }
+            Node<E> * it = head;
+            int counter = 0;
+            while(counter < position){
+                it = it->next;
+                counter++;
+            }
+            return it->data;
+        }
+
+    public:
+        //constructor
+        SSLL() {
+            head = tail = nullptr;
+        }
+        //copy constructor
+        SSLL(const SSLL& ssll) {
+            //don't need to clear since this is new ssll
+            head = tail = nullptr;
+            Node<E>* it = ssll.head;
+
+            //iterate and push back new data
+            while (it) {
+                push_back(it->data);
+                it = it->next;
+            }
+        }
+        //destructor
+        ~SSLL() {
+            Node<E>* it = head;
+            while (it) {
+                Node<E>* temp = it->next;
+                delete it;
+                it = temp;
+            }
+            head = tail = nullptr;
+        }
+
+        //copy assigment constructor
+        SSLL& operator=(const SSLL& ssll) {
+            if (&ssll== this)
+                return *this;
+            //clear before adding new
+            clear();
+
+            //iterate and push back new data
+            Node<E>* it = ssll.head;
+            while (it) {
+                push_back(it->data);
+                it = it->next;
+            }
+            return *this;
+        }
+
 
         // adds the specified element to the list at the specified position, shifting
         // the element originally at that and those in subsequent positions one
@@ -90,7 +337,6 @@ namespace cop3530 {
         // list's elements in sequential order.
         E* contents(void)  override;
 
-        ~SSLL() ;
     };
     template<typename E>
     void SSLL<E>::insert(E element, size_t position) {
@@ -349,12 +595,6 @@ namespace cop3530 {
         }
 
         return elements;
-    }
-
-    template<typename E>
-    SSLL<E>::~SSLL() {
-        head = nullptr;
-        tail = nullptr;
     }
 }
 

@@ -1,5 +1,5 @@
-#ifndef _MAIN_CPP
-#define _MAIN_CPP
+#ifndef MAIN_CPP
+#define MAIN_CPP
 //#define DEBUG
 #include "List.h"
 #include "SSLL.h"
@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+//#define CATCH_CONFIG_MAIN
 
 // #include <cstdio>
 
@@ -22,6 +23,7 @@ void setup(List<int> *list) {
 
 bool push_pop(List<int> *list) {
     setup(list);
+    std::cout << "\npush_pop test..." << std::endl;
     for(int i = 0; i < 90; i++ ){
         list->push_back(5);
     }
@@ -129,13 +131,13 @@ return "FAIL";
 
 
 int main() {
-     List<int> *ssll = new SSLL<int>();
-     List<int> *psll = new PSLL<int> ();
+    List<int> *ssll = new SSLL<int> ();
+    List<int> *psll = new PSLL<int> ();
     List<int> * sdal = new SDAL<int> ();
     List<int> *cdal = new CDAL<int>();
     List<int> *cbl = new CBL<int>();
     std::vector<List<int> *> lists;
-    lists.push_back(ssll);
+//    lists.push_back(ssll);
     lists.push_back(psll );
     lists.push_back(sdal);
     lists.push_back(cdal);

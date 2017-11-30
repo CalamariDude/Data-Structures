@@ -1,4 +1,4 @@
-//
+ //
 // Created by Jad Zeineddine on 9/18/17.
 //
 
@@ -28,16 +28,267 @@ namespace cop3530 {
 
     template<typename E>
     class PSLL : public List<E>{
-
-
-    public:
+        
+    
+    private:
         Noder<E> *head;
         Noder<E> *tail;
         Noder<E> *free;
+        
+    public:
+    public:
+        class PSLL_Iter
+        {
+        public:
+            //--------------------------------------------------
+            // type aliases
+            //--------------------------------------------------
+            using value_type = E;
+            using difference_type = std::ptrdiff_t;
+            using reference = E&;
+            using pointer = E*;
+            using iterator_category = std::forward_iterator_tag;
+            using self_type = PSLL_Iter;
+            using self_reference = PSLL_Iter&;
+
+        private:
+            Node<E>* here;
+
+        public:
+            explicit PSLL_Iter(Node<E>* start = nullptr) :
+                    here(start) {
+            }
+            PSLL_Iter(const PSLL_Iter& src) :
+                    here(src.here) {
+            }
+
+            reference operator*() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return here->data;
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return &here->data;
+            }
+            //pointer operator
+            self_reference operator=(const PSLL_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                here = src.here;
+                return *this;
+            }
+            //preinc
+            self_reference operator++() {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                here = here->next;
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                PSLL_Iter iter(*this);
+                here = here->next;
+                return iter;
+            }
+            //equals operator
+            bool operator==(const PSLL_Iter& rhs) const {
+                return here == rhs.here;
+            }
+            //not equals operator
+            bool operator!=(const PSLL_Iter& rhs) const {
+                return here != rhs.here;
+            }
+        };
+
+        class PSLL_Const_Iter
+        {
+        public:
+            //--------------------------------------------------
+            // type aliases
+            //--------------------------------------------------
+            using value_type = E ;
+            using difference_type = std::ptrdiff_t ;
+            using reference = const E& ;
+            using pointer = const E* ;
+
+            using self_type = PSLL_Const_Iter ;
+            using self_reference = PSLL_Const_Iter&;
+            using iterator_category = std::forward_iterator_tag;
+
+        private:
+            const Node<E>* here;
+
+        public:
+            explicit PSLL_Const_Iter(Node<E>* start = nullptr) :
+                    here(start) {
+            }
+
+            PSLL_Const_Iter(const PSLL_Const_Iter& src) :
+                    here(src.here) {
+            }
+            //pointer operator
+            reference operator*() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return here->data;
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return &here->data;
+            }
+
+            self_reference operator=(const PSLL_Const_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                here = src.here;
+                return *this;
+            }
+            //pre inc
+            self_reference operator++() {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                here = here->next;
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                PSLL_Const_Iter iter(*this);
+                here = here->next;
+                return iter;
+            }
+            //equals operator
+            bool operator==(const PSLL_Const_Iter& rhs) const {
+                if(here == rhs.here){
+                    return true;
+                }
+                return false;
+            }
+            //not equals operator
+            bool operator!=(const PSLL_Const_Iter& rhs) const {
+                if(here != rhs.here){
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        using size_t = std::size_t ;
+        using value_type = E ;
+        using iterator = PSLL_Iter ;
+        using const_iterator = PSLL_Const_Iter ;
+
+        // iterators over a non-const List
+        iterator begin() {
+            return PSLL_Iter(head);
+        }
+        iterator end() {
+            return PSLL_Iter();
+        }
+
+        // iterators over a const List
+        const_iterator begin() const {
+            return PSLL_Const_Iter(head);
+        }
+        const_iterator end() const {
+            return PSLL_Const_Iter();
+        }
+
+        //move operators
+        E& operator[](size_t position) {
+            if (position > length() - 1) {
+                throw std::runtime_error("out of bounds");
+            }
+            Node<E>* it = head;
+            int counter = 0;
+            while(counter < position){
+                it = it->next;
+                counter++;
+            }
+            return it->data;
+        }
+
+        //move operators
+        E const& operator[](size_t position) const {
+            if (position > length() - 1) {
+                throw std::runtime_error("out of bounds");
+            }
+            Node<E> * it = head;
+            int counter = 0;
+            while(counter < position){
+                it = it->next;
+                counter++;
+            }
+            return it->data;
+        }
+        
+        //constructor
         PSLL(){
             head = tail = nullptr;
             allocate_pool();
+        }
+        
+        //copy constructor
+        PSLL(const PSLL& psll) {
+            //don't need to clear since this is new psll
+            head = tail = nullptr;
+            allocate_pool();
+            Node<E>* it = psll.head;
 
+            //iterate and push back new data
+            while (it) {
+                push_back(it->data);
+                it = it->next;
+            }
+        }
+        //destructor
+        ~PSLL() {
+            Node<E>* it = head;
+            while (it) {
+                Node<E>* temp = it->next;
+                delete it;
+                it = temp;
+            }
+            while(free){
+                Node<E>* temp = free->next;
+                delete free;
+                free = temp;
+            }
+            head = tail = nullptr;
+        }
+
+        //copy assigment constructor
+        PSLL& operator=(const PSLL& psll) {
+            if (&psll== this)
+                return *this;
+            //clear before adding new
+            clear();
+
+            //iterate and push back new data
+            Node<E>* it = psll.head;
+            while (it) {
+                push_back(it->data);
+                it = it->next;
+            }
+            return *this;
         }
 
         // adds the specified element to the list at the specified position, shifting
@@ -103,7 +354,7 @@ namespace cop3530 {
         // list's elements in sequential order.
         E* contents(void)  override;
 
-        ~PSLL() ;
+
 
     private:
         //allocate pool of size_t
@@ -382,12 +633,6 @@ namespace cop3530 {
         return elements;
     }
 
-    template<typename E>
-    PSLL<E>::~PSLL() {
-        head = nullptr;
-        tail = nullptr;
-    }
-
     //allocate pool of size_t
     template<typename E>
     void PSLL<E>::allocate_pool(){
@@ -430,7 +675,6 @@ namespace cop3530 {
     //push to free list
     template<typename E>
     void PSLL<E>::add_free(Noder<E>* freed){
-        freed->data=NULL;
         freed->next=free;
         free=freed;
         correct_size();

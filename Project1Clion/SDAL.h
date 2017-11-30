@@ -12,11 +12,251 @@ namespace cop3530 {
     template<typename E>
     class SDAL : public List<E>{
 
+    private:
+        size_t tail = SIZE_T_MAX;
+        E* vec;
+    public:
+
 
     public:
-        size_t tail = SIZE_T_MAX;
+        class SDAL_Iter
+        {
+        public:
+            //--------------------------------------------------
+            // type aliases
+            //--------------------------------------------------
+            using value_type = E;
+            using difference_type = std::ptrdiff_t;
+            using reference = E&;
+            using pointer = E*;
+            using iterator_category = std::forward_iterator_tag;
+            using self_type = SDAL_Iter;
+            using self_reference = SDAL_Iter&;
+
+        private:
+            size_t here;
+
+        public:
+            explicit SDAL_Iter(size_t start = SIZE_T_MAX):
+                    here(start) {
+            }
+            SDAL_Iter(const SDAL_Iter& src) :
+                    here(src.here) {
+            }
+
+            reference operator*() const {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                return vec[here];
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                return &vec[here];
+            }
+            //pointer operator
+            self_reference operator=(const SDAL_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                vec[here] = src.vec[src.here];
+                return *this;
+            }
+            //preinc
+            self_reference operator++() {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                here = here+1;
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                SDAL_Iter iter(*this);
+                here = vec[here+1];
+                return iter;
+            }
+            //equals operator
+            bool operator==(const SDAL_Iter& rhs) const {
+                return vec[here] == rhs.vec[rhs.here];
+            }
+            //not equals operator
+            bool operator!=(const SDAL_Iter& rhs) const {
+                return vec[here] != rhs.vec[rhs.here];
+            }
+        };
+
+        class SDAL_Const_Iter
+        {
+        public:
+            //--------------------------------------------------
+            // type aliases
+            //--------------------------------------------------
+            using value_type = E ;
+            using difference_type = std::ptrdiff_t ;
+            using reference = const E& ;
+            using pointer = const E* ;
+            using self_type = SDAL_Const_Iter ;
+            using self_reference = SDAL_Const_Iter&;
+            using iterator_category = std::forward_iterator_tag;
+
+        private:
+            const size_t here;
+
+        public:
+            explicit SDAL_Const_Iter(size_t start = SIZE_T_MAX) :
+                    here(start) {
+            }
+
+            SDAL_Const_Iter(const SDAL_Const_Iter& src) :
+                    here(here != SIZE_T_MAX) {
+            }
+            //pointer operator
+            reference operator*() const {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                return vec[here];
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                return &vec[here];
+            }
+
+            self_reference operator=(const SDAL_Const_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                here = src.here;
+                return *this;
+            }
+            //pre inc
+            self_reference operator++() {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                here = here+1;
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (here != SIZE_T_MAX) {
+                    throw std::runtime_error("null node");
+                }
+                SDAL_Const_Iter iter(*this);
+                here = here + 1;
+                return iter;
+            }
+            //equals operator
+            bool operator==(const SDAL_Const_Iter& rhs) const {
+                if(vec[here] == rhs.vec[rhs.here]){
+                    return true;
+                }
+                return false;
+            }
+            //not equals operator
+            bool operator!=(const SDAL_Const_Iter& rhs) const {
+                if(here != rhs.here){
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        using size_t = std::size_t ;
+        using value_type = E ;
+        using iterator = SDAL_Iter ;
+        using const_iterator = SDAL_Const_Iter ;
+
+        // iterators over a non-const List
+        iterator begin() {
+            return SDAL_Iter(0);
+        }
+        iterator end() {
+            return SDAL_Iter();
+        }
+
+        // iterators over a const List
+        const_iterator begin() const {
+            return SDAL_Const_Iter(0);
+        }
+        const_iterator end() const {
+            return SDAL_Const_Iter();
+        }
+
+        //move operators
+        E& operator[](size_t position) {
+            if (position > length() - 1) {
+                throw std::runtime_error("out of bounds");
+            }
+            size_t it = 0;
+            int counter = 0;
+            while(counter < position){
+                it = it + 1 ;
+                counter++;
+            }
+            return vec[it];
+        }
+
+        //move operators
+        E const& operator[](size_t position) const {
+            if (position > length() - 1) {
+                throw std::runtime_error("out of bounds");
+            }
+            size_t it = 0;
+            int counter = 0;
+            while(counter < position){
+                it = it + 1;
+                counter++;
+            }
+
+            return vec[it];
+        }
+
+
+        //copy constructor
+        SDAL(const SDAL& sdal) {
+            //don't need to clear since this is new ssll
+            tail = SIZE_T_MAX;
+            it = 0;
+
+            size_t size = sdal.length();
+            vec = new E[size];
+
+            //iterate and push back new data
+            while (it != sdal.tail) {
+                push_back(sdal.vec[it]);
+                it = it + 1;
+            }
+        }
+
+        //copy assigment constructor
+        SSLL& operator=(const SSLL& sdal) {
+            if (&sdal== this)
+                return *this;
+            //clear before adding new
+            clear();
+
+            //iterate and push back new data
+            size_t it = 0;
+            while (it != sdal.tail) {
+                push_back(sdal.vec[it]);
+                it = it+1;
+            }
+            return *this;
+        }
+
+
         // constructor
-        E* vec;
         SDAL() {
             size_t size = 50;
             vec = new E[size];

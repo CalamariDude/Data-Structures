@@ -387,9 +387,7 @@ namespace cop3530 {
     template<typename E>
     void CDAL<E>::first_element_insert(E element){
         head = tail = 0;
-        if(root->cars){
-            root->cars[0] = element;
-        }
+        root->cars[0] = element;
 
     }
 
