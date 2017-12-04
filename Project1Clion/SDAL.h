@@ -356,8 +356,7 @@ namespace cop3530 {
         }
         else{
             move_up(position);
-            int insert = find_free_node_service();
-            vec[insert] = element;
+            vec[position] = element;
         }
     }
 
@@ -382,7 +381,6 @@ namespace cop3530 {
         else{
             move_up(0);
             vec[0] = element;
-            tail++;
         }
     }
 

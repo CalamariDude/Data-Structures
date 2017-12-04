@@ -159,8 +159,6 @@ namespace cop3530 {
             size_t insert = find_free_node_service(1);
             vec[insert] = element;
             decrement(head);
-            std::cout<< "head after push_front " << head<<std::endl;
-            std::cout<< "vecsize = " << vecSize << std::endl;
         }
     }
 

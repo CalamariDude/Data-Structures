@@ -267,8 +267,9 @@ namespace cop3530 {
                 delete it;
                 it = temp;
             }
-            while(free){
-                Node<E>* temp = free->next;
+            it = free;
+            while(it){
+                Node<E>* temp = it->next;
                 delete free;
                 free = temp;
             }
@@ -584,9 +585,13 @@ namespace cop3530 {
 
     template<typename E>
     void   PSLL<E>::clear(void) {
-        // could cause memory leak
-        head = nullptr;
-        tail = nullptr;
+        Node<E>* it = head;
+        while (it) {
+            Node<E>* temp = it->next;
+            delete it;
+            it = temp;
+        }
+        head = tail = nullptr;
     }
 
     template<typename E>

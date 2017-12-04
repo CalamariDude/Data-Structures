@@ -39,12 +39,23 @@ bool push_insert_remove(List<int> *list)    {
     setup(list);
     std::cout << "\nrunning push_insert_remove test..." << std::endl;
     list->push_back(1); // 624315
+//    std::cout<< "\nlist->push_back(1); " << std::endl;
+//    list->print(std::cout);
     list->push_front(2);
+//    std::cout<< "\nlist->push_front(2);" << std::endl;
+//    list->print(std::cout);
     list->insert(3, 1);
+//    std::cout<< "\nlist->insert(3, 1);" << std::endl;
+//    list->print(std::cout);
     list->insert(4, 1);
+//    std::cout<< "\nlist->insert(4, 1);" << std::endl;
+//    list->print(std::cout);
     list->push_back(5);
+//    std::cout<< "\nlist->push_back(5);" << std::endl;
+//    list->print(std::cout);
     list->push_front(6);
-    list->print(std::cout);
+//    std::cout<< "\nlist->push_front(6);" << std::endl;
+//    list->print(std::cout);/
     int i = list->remove(4);
     std::cout << "i = " << i << std::endl;
     return i==1;

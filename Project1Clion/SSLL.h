@@ -248,13 +248,7 @@ namespace cop3530 {
         }
         //destructor
         ~SSLL() {
-            Node<E>* it = head;
-            while (it) {
-                Node<E>* temp = it->next;
-                delete it;
-                it = temp;
-            }
-            head = tail = nullptr;
+            clear();
         }
 
         //copy assigment constructor
@@ -435,12 +429,14 @@ namespace cop3530 {
             if (position == 0) {
                 temp       = it;
                 prev->next = it->next;
-                return temp->data;
+                break;
+
             }
             position--;
             it   = it->next;
             prev = it;
         }
+        return temp->data;
     }
 
     template<typename E>
@@ -548,9 +544,13 @@ namespace cop3530 {
 
     template<typename E>
     void   SSLL<E>::clear(void) {
-        // could cause memory leak
-        head = nullptr;
-        tail = nullptr;
+        Node<E>* it = head;
+        while (it) {
+            Node<E>* temp = it->next;
+            delete it;
+            it = temp;
+        }
+        head = tail = nullptr;
     }
 
     template<typename E>
