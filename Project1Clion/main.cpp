@@ -38,32 +38,16 @@ bool push_pop(List<int> *list) {
 bool push_insert_remove(List<int> *list)    {
     setup(list);
     std::cout << "\nrunning push_insert_remove test..." << std::endl;
-    list->push_back(1);
-    std::cout << "after push_back "  << std::endl;
-    list->print(std::cout);
+    list->push_back(1); // 624315
     list->push_front(2);
-    std::cout << "\nafter push_front"  << std::endl;
-    list->print(std::cout);
     list->insert(3, 1);
-    std::cout << "\nafter insert"  << std::endl;
-    list->print(std::cout);
     list->insert(4, 1);
-    std::cout << "\nafter insert"  << std::endl;
-    list->print(std::cout);
-    list->insert(41, 1);
-    std::cout << "\nafter insert"  << std::endl;
-    list->print(std::cout);
-    list->insert(42, 1);
-    std::cout << "\nafter insert"  << std::endl;
-    list->print(std::cout);
     list->push_back(5);
-    std::cout << "\nafter push_back "  << std::endl;
-    list->print(std::cout);
     list->push_front(6);
-    std::cout << "\nafter push_front"  << std::endl;
     list->print(std::cout);
-    int i = list->remove(1);
-    return i==5;
+    int i = list->remove(4);
+    std::cout << "i = " << i << std::endl;
+    return i==1;
 }
 
 bool push_peek_print(List<int> *list)       {

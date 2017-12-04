@@ -131,7 +131,7 @@ namespace cop3530 {
         }
         else{
             move_up(position);
-            size_t insert = find_free_node_service(0);
+            size_t insert = (position + head ) % vecSize;
             vec[insert] = element;
 
         }
@@ -159,6 +159,8 @@ namespace cop3530 {
             size_t insert = find_free_node_service(1);
             vec[insert] = element;
             decrement(head);
+            std::cout<< "head after push_front " << head<<std::endl;
+            std::cout<< "vecsize = " << vecSize << std::endl;
         }
     }
 
@@ -182,10 +184,9 @@ namespace cop3530 {
         if(position == 0){
             return pop_front();
         }
-        if(position - length()-1){
+        if(position - length()-1 == 0){
             return pop_back();
         }
-
         E element = vec[position_at(position)];
         move_back(position);
         balance();
@@ -295,7 +296,7 @@ namespace cop3530 {
     void CBL<E>::print(std::ostream& os) {
         size_t it = head;
         while(it != tail){
-            os << vec[it] << " ";
+            os << "[" << it <<"]="<< vec[it] << " ";
             increment(it);
         }
     }
@@ -374,10 +375,12 @@ namespace cop3530 {
     template<typename E>
     void CBL<E>::move_up(size_t position){
         size_t it = find_free_node_service(0);
-        increment(it);
-        tail = it;
+        increment(tail);
         while(it > position){
-            vec[it] = vec[decrement(it)];
+            size_t dupe = it;
+            decrement(dupe);
+            vec[it] = vec[dupe];
+            it = dupe;
         }
 
     }
