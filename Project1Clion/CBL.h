@@ -12,7 +12,6 @@ namespace cop3530 {
     template<typename E>
     class CBL : public List<E>{
 
-
     public:
         size_t tail = 0;
         size_t head = 0;
@@ -20,6 +19,233 @@ namespace cop3530 {
         E* vec;
         size_t vecSize; // maintains size of backing array, not length
 
+    public:
+        class CBL_Iter
+            {
+            using value_type = E;
+            using difference_type = std::ptrdiff_t;
+            using reference = E&;
+            using pointer = E*;
+            using iterator_category = std::forward_iterator_tag;
+            using self_type = CBL_Iter;
+            using self_reference = CBL_Iter&;
+
+        private:
+            const CBL* cbl;
+            E* here;
+        public:
+            explicit CBL_Iter(E * start = nullptr, CBL * vector = nullptr): // diff
+                here(start), cbl(vector) {
+            }
+            CBL_Iter(const CBL_Iter& src) :
+                    here(src.here) , cbl(src.cbl){
+            }
+
+            reference operator*() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return *here;
+            }
+            //pointer operator
+            pointer operator->() const {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                return here;
+            }
+            //pointer operator
+            self_reference operator=(const CBL_Iter& src) {
+                if (*this == src) {
+                    return *this;
+                }
+                cbl = src.cbl;
+                here = src.here;
+                return *this;
+            }
+            //preinc
+            self_reference operator++() {
+                if (!here ) {
+                    throw std::runtime_error("null node");
+                }
+                increment(here);
+                return *this;
+            }
+            //post inc
+            self_type operator++(int) {
+                if (!here) {
+                    throw std::runtime_error("null node");
+                }
+                CBL_Iter iter(*this);
+                increment(here);
+                return iter;
+            }
+            //equals operator
+            bool operator==(const CBL_Iter& rhs) const {
+                return here  == rhs.here;
+            }
+            //not equals operator
+            bool operator!=(const CBL_Iter& rhs) const {
+                return here != rhs.here;
+            }
+    };
+
+    class CBL_Const_Iter
+    {
+    public:
+        //--------------------------------------------------
+        // type aliases
+        //--------------------------------------------------
+        using value_type = E ;
+        using difference_type = std::ptrdiff_t ;
+        using reference = const E& ;
+        using pointer = const E* ;
+        using self_type = CBL_Const_Iter ;
+        using self_reference = CBL_Const_Iter&;
+        using iterator_category = std::forward_iterator_tag;
+
+    private:
+        const CBL* cbl;
+        const E* here;
+
+    public:
+        explicit CBL_Const_Iter(E * start = nullptr, CBL * cbl = nullptr) : // diff
+                here(start) {
+        }
+
+        CBL_Const_Iter(const CBL_Const_Iter& src) :
+                here(!here) {
+        }
+        //pointer operator
+        reference operator*() const {
+            if (!here) {
+                throw std::runtime_error("null node");
+            }
+            return *here;
+        }
+        //pointer operator
+        pointer operator->() const {
+            if (!here) {
+                throw std::runtime_error("null node");
+            }
+            return here;
+        }
+
+        self_reference operator=(const CBL_Const_Iter& src) {
+            if (*this == src) {
+                return *this;
+            }
+            cbl = src.cbl;
+            here = src.here;
+            return *this;
+        }
+        //pre inc
+        self_reference operator++() {
+            if (!here) {
+                throw std::runtime_error("null node");
+            }
+            increment(here);
+            return *this;
+        }
+        //post inc
+        self_type operator++(int) {
+            if (!here) {
+                throw std::runtime_error("null node");
+            }
+            CBL_Const_Iter iter(*this);
+            increment(here);
+            return iter;
+        }
+        //equals operator
+        bool operator==(const CBL_Const_Iter& rhs) const {
+            if(here != rhs.here){
+                return true;
+            }
+            return false;
+        }
+        //not equals operator
+        bool operator!=(const CBL_Const_Iter& rhs) const {
+            if(here != rhs.here){
+                return true;
+            }
+            return false;
+        }
+    };
+
+    using size_t = std::size_t ;
+    using value_type = E ;
+    using iterator = CBL_Iter ;
+    using const_iterator = CBL_Const_Iter ;
+
+    // iterators over a non-const List
+    iterator begin() {
+        return CBL_Iter(0);
+    }
+    iterator end() {
+        return CBL_Iter();
+    }
+
+    // iterators over a const List
+    const_iterator begin() const {
+        return CBL_Const_Iter(0);
+    }
+    const_iterator end() const {
+        return CBL_Const_Iter();
+    }
+
+    //move operators
+    E& operator[](size_t position) {
+        if (position > length() - 1) {
+            throw std::runtime_error("out of bounds");
+        }
+        return vec[position_at(position)];
+    }
+
+    //move operators
+    E const& operator[](size_t position) const {
+        if (position > length() - 1) {
+            throw std::runtime_error("out of bounds");
+        }
+        size_t it = 0;
+
+        return vec[position_at(position)];
+    }
+
+
+    //copy constructor
+    CBL(const CBL& cbl) {
+        //don't need to clear since this is new ssll
+        tail = 0;
+        size_t it = 0;
+
+        size_t size = cbl.length();
+        vec = new E[size];
+
+        //iterate and push back new data
+        while (it != cbl.tail) {
+            push_back(cbl.vec[it]);
+            it = it + 1;
+        }
+    }
+
+    //copy assigment constructor
+    CBL& operator=(const CBL& cbl) {
+        if (&cbl== this)
+            return *this;
+        //clear before adding new
+        clear();
+
+        //iterate and push back new data
+        size_t it = 0;
+        while (it != cbl.tail) {
+            push_back(cbl.vec[it]);
+            it = it+1;
+        }
+        return *this;
+    }
+        
+        
+        
         CBL() {
             size_t size = 50;
             vecSize = size;
@@ -31,6 +257,11 @@ namespace cop3530 {
             vecSize = size;
             vec = new E[size];
             tail = 0;
+        }
+        
+        ~CBL(){
+            delete vec;
+            head = tail = 0;
         }
 
         // adds the specified element to the list at the specified position, shifting
@@ -96,7 +327,7 @@ namespace cop3530 {
         // list's elements in sequential order.
         E    * contents(void)  override;
 
-//        ~CBL();
+
 
         //helper functions
         void make_bigger();
@@ -269,8 +500,10 @@ namespace cop3530 {
 
     template<typename E>
     void   CBL<E>::clear(void) {
+        delete vec;
+        vec = new E[50];
+        vecSize = 50;
         head = tail = 0;
-        balance();
     }
 
     template<typename E>

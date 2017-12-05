@@ -585,7 +585,7 @@ namespace cop3530 {
 
     template<typename E>
     void   PSLL<E>::clear(void) {
-        Node<E>* it = head;
+        Noder<E>* it = head;
         while (it) {
             Node<E>* temp = it->next;
             delete it;

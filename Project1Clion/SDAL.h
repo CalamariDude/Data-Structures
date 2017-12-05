@@ -261,6 +261,11 @@ namespace cop3530 {
             tail = SIZE_T_MAX;
         }
 
+        ~SDAL(){
+            delete vec;
+            head = tail = 0;
+        }
+
         // adds the specified element to the list at the specified position, shifting
         // the element originally at that and those in subsequent positions one
         // position to the ”right.“
@@ -324,7 +329,6 @@ namespace cop3530 {
         // list's elements in sequential order.
         E    * contents(void)  override;
 
-//        ~SDAL();
 
         //helper functions
         size_t make_bigger();
@@ -478,7 +482,7 @@ namespace cop3530 {
 
     template<typename E>
     void   SDAL<E>::clear(void) {
-        tail = SIZE_T_MAX;
+        tail = 0;
         balance();
     }
 
