@@ -525,11 +525,12 @@ namespace cop3530 {
         return arr;
     }
 
-//    template<typename E>
-//    SDAL<E>::~SDAL() {
-//        head = -2;
-//        tail = -2;
-//    }
+    template<typename E>
+    SDAL<E>::~SDAL() {
+        delete vec;
+        head = -2;
+        tail = -2;
+    }
 
 
     template<typename E>
