@@ -42,11 +42,11 @@ bool push_insert_remove(List<int> *list)    {
 //    std::cout<< "\nlist->push_back(1); " << std::endl;
 //    list->print(std::cout);
     list->push_front(2);
-//    std::cout<< "\nlist->push_front(2);" << std::endl;
-//    list->print(std::cout);
+    std::cout<< "\nlist->push_front(2);" << std::endl;
+    list->print(std::cout);
     list->insert(3, 1);
-//    std::cout<< "\nlist->insert(3, 1);" << std::endl;
-//    list->print(std::cout);
+    std::cout<< "\nlist->insert(3, 1);" << std::endl;
+    list->print(std::cout);
     list->insert(4, 1);
 //    std::cout<< "\nlist->insert(4, 1);" << std::endl;
 //    list->print(std::cout);
@@ -156,8 +156,6 @@ int main() {
     lists.push_back(sdal);
     lists.push_back(cdal);
     lists.push_back(cbl);
-    //Hello
-    //hello 2
     for (int i = 0; i < lists.size(); i++) {
         std::vector< bool > testsPassed;
         std::cout << "\n\n_________________________________________" << std::endl;

@@ -68,7 +68,7 @@ namespace cop3530 {
                 if (!here ) {
                     throw std::runtime_error("null node");
                 }
-                increment(here);
+                here++;
                 return *this;
             }
             //post inc
@@ -77,7 +77,7 @@ namespace cop3530 {
                     throw std::runtime_error("null node");
                 }
                 CBL_Iter iter(*this);
-                increment(here);
+                here++;
                 return iter;
             }
             //equals operator
@@ -144,7 +144,7 @@ namespace cop3530 {
             if (!here) {
                 throw std::runtime_error("null node");
             }
-            increment(here);
+            here++;
             return *this;
         }
         //post inc
@@ -153,7 +153,7 @@ namespace cop3530 {
                 throw std::runtime_error("null node");
             }
             CBL_Const_Iter iter(*this);
-            increment(here);
+            here++;
             return iter;
         }
         //equals operator

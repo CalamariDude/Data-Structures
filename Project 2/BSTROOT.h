@@ -123,15 +123,15 @@ namespace cop3530 {
         }
         else if(Eq(curr->key, key )){
             curr->value = value;
-            return RR(curr);
+            return RR(root);
         }
         else if(Cp(key , curr->key)){
             curr->left = insert_at_root(key,value,curr->left);
-            return RR(curr);
+            return RR(root);
         }
         else{
             curr->right = insert_at_root(key,value, curr->right);
-            return LL(curr);
+            return LL(root);
         }
     }
 

@@ -261,10 +261,7 @@ namespace cop3530 {
             tail = SIZE_T_MAX;
         }
 
-        ~SDAL(){
-            delete vec;
-            head = tail = 0;
-        }
+        ~SDAL();
 
         // adds the specified element to the list at the specified position, shifting
         // the element originally at that and those in subsequent positions one
@@ -528,7 +525,6 @@ namespace cop3530 {
     template<typename E>
     SDAL<E>::~SDAL() {
         delete vec;
-        head = -2;
         tail = -2;
     }
 
